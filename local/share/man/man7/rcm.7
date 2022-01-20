@@ -1,0 +1,367 @@
+.Dd July 28, 2013
+.Dt RCM 7
+.Os
+.Sh NAME
+.Nm rcm
+.Nd dotfile management
+.Sh SYNOPSIS
+.Nm lsrc
+.Nm mkrc
+.Nm rcdn
+.Nm rcup
+.Sh DESCRIPTION
+The rcm suite of tools is for managing dotfiles directories. This is a
+directory containing all the
+.Li .*rc
+files in your home directory
+.Sm off
+.Po
+.Pa .zshrc ,
+.Sm on
+.Pa .vimrc ,
+and so on
+.Pc .
+These files have gone by many
+names in history, such as
+.Do
+rc files
+.Dc
+because they typically end in
+.Li rc
+or
+.Do
+dotfiles
+.Dc
+because they begin with a period.
+.Pp
+This suite is useful for committing your rc files to a central repository
+to share, but it also scales to a more complex situation such as
+multiple source directories shared between computers with some
+host-specific or task-specific files.
+.Pp
+This guide serves as a tutorial motivating the suite. For a list of
+quick reference documentation see the
+.Sx SEE ALSO
+section below.
+.
+.Sh QUICK START FOR EXISTING DOTFILES DIRECTORIES
+This section is for those who already have an existing dotfiles
+directory; this directory is
+.Pa ~/.dotfiles ;
+the directory only contains rc files; and these rc filenames do not
+begin with a period. See the caveats below if this is not you.
+.Bl -enum
+.It
+Dry run with
+.Xr lsrc 1 .
+Look for anything unexpected in here, such as
+.Pa ~/.install
+or
+.Pa ~/.Makefile ,
+or an empty list of dotfiles.
+.Pp
+.Dl lsrc
+.It
+Update any symlinks with
+.Xr rcup 1 .
+This is likely to do nothing, since your dotfiles already exist.
+.Pp
+.Dl rcup -v
+.It
+When necessary, add new rc files to the dotfiles directory with
+.Xr mkrc 1 .
+.Pp
+.Dl mkrc ~/.tigrc
+.Pp
+In the other direction, you can use
+.Xr rcup 1
+to create the symlinks from
+.Pa ~/.dotfiles
+to your home directory.
+.Pp
+.Dl rcup tigrc
+.El
+.Ss COMMON PROBLEM: EXISTING INSTALL SCRIPTS
+Many existing dotfile directories have scripts named
+.Pa install
+or
+.Pa Makefile
+in the directory. This will cause a
+.Pa ~/.install
+or
+.Pa ~/.Makefile
+symlink to be created in your home
+directory. Use an exclusion pattern to ignore these.
+.Pp
+.Dl rcup -x install -x Rakefile -x Makefile -x install.sh
+.Ss COMMON PROBLEM: DOTTED FILENAMES IN DOTFILES DIRECTORY
+A less common situation is for all the filenames in your dotfiles
+directory to be prefixed with a period. These files are skipped by the
+rcm suite, and thus would result in nothing happening. The only option
+in this case is to rename all the files, for example by using a shell
+command like the following.
+.Pp
+.Dl find ~/.dotfiles -name '.*' -exec echo mv {} `echo {} | sed 's/\.//'` \;
+.Pp
+Note that this will break any existing symlinks. Those can be safely
+removed using the
+.Xr rcdn 1
+command.
+.Pp
+.Dl rcdn -v
+.Ss COMMON PROBLEM: DOTFILES DIRECTORY NOT IN Pa ~/.dotfiles
+This all assumes that your dotfiles directory is
+.Pa ~/.dotfiles .
+If it is elsewhere and you do not want to move it you can use the
+.Fl d Ar DIR
+option to
+.Xr rcup 1
+or modify
+.Ev DOTFILES_DIRS
+in
+.Xr rcrc 5 .
+.Pp
+.Dl rcup -d configs -v
+.
+.Ss COMMON PROBLEM: CONFIGURATION FILES/DIRECTORIES WITHOUT DOTS
+By default, the rcm suite will prefix every file and directory it manages
+with a dot. If that is not desired, for example in the case of
+.Pa ~/bin
+or
+.Pa ~/texmf ,
+you can add that file or directory to
+.Ev UNDOTTED
+in
+.Xr rcrc 5
+or use the
+.Fl U
+option. For example:
+.Pp
+.Dl mkrc -U bin
+.
+.Sh QUICK START FOR EMPTY DOTFILES DIRECTORIES
+This section is for those who do not have an existing dotfiles
+directory and whose dotfiles are standard.
+.Bl -enum
+.It
+Add your rc files to a dotfiles directory with
+.Xr mkrc 1 .
+.Pp
+.Dl mkrc .zshrc .gitconfig .tigrc
+.It
+Synchronize your home directory with
+.Xr rcup 1
+.Pp
+.Dl rcup -v
+.El
+.Pp
+This will give you a directory named
+.Pa ~/.dotfiles
+with your dotfiles in it. Your original dotfiles will be symlinks into
+this directory. For example,
+.Pa ~/.zshrc
+will be a symlink to
+.Pa ~/.dotfiles/zshrc .
+.
+.Sh TAGGED DOTFILES
+This suite becomes more powerful if you share your dotfiles directory
+between computers, either because multiple people share the same
+directory or because you have multiple computers.
+.Pp
+If you share the dotfiles directory between people, you may end up with
+some irrelevant or even incorrect rc files. For example, you may have a
+.Pa .zshrc
+while your other contributor has a
+.Pa .bashrc .
+This situation can be handled with tags.
+.Bl -enum
+.It
+A tag is a directory under the dotfiles directory that starts with the
+letters
+.Li tag- .
+We can handle the competing shell example by
+making a
+.Pa tag-zsh
+directory and moving the
+.Pa .zshrc
+file into it using
+.Xr mkrc 1
+and passing the
+.Fl t
+option.
+.Pp
+.Dl mkrc -t zsh .zshrc
+.It
+When updating with
+.Xr rcup 1
+you can pass the
+.Fl t
+option to
+include the tags you want. This can also be set in the
+.Xr rcrc 5
+configuration file with the
+.Ev TAGS
+variable.
+.Pp
+.Dl rcup -t zsh
+.El
+.
+.Sh MULTIPLE DOTFILE DIRECTORIES
+Another common situation is combining multiple dotfiles directories that
+people have shared with you. For this we have the
+.Fl d
+flag or the
+.Ev DOTFILES_DIRS
+option in
+.Pa .rcrc .
+.Pp
+The following rcup invocation will go in sequence through the three dotfiles
+directories, updating any symlinks as needed. Any overlapping rc files
+will use the first result, not the last; that is,
+.Pa .dotfiles/vimrc
+will take precedence over
+.Pa marriage-dotfiles/vimrc .
+.Pp
+.Dl rcup -d .dotfiles -d marriage-dotfiles -d thoughtbot-dotfiles
+.Pp
+An exclusion pattern can be tied to a specific dotfiles directory.
+.Pp
+.Dl rcup -d .dotfiles -d work-dotfiles -x 'work-dotfiles:powrc'
+.
+.Sh HOST-SPECIFIC DOTFILES
+You can also mark host-specific files. This will go by the hostname. The
+.Xr rcrc 5
+configuration
+file is a popular candidate for a host-specific file, since the tags and
+dotfile directories listed in there are often specific to a single
+machine.
+.Pp
+.Dl mkrc -o .rcrc
+.Pp
+If your hostname is difficult to compute, or you otherwise want to use a
+different hostname, you can use the
+.Fl B
+flag.
+.Pp
+.Dl mkrc -B eggplant .rcrc
+.Pp
+macOS users should see the
+.Sx BUGS
+section for more details.
+.
+.Sh STANDALONE INSTALLATION SCRIPT
+.
+The
+.Xr rcup 1
+tool can be used to generate a portable shell script.
+Instead of running a command such as
+.Xr ln 1
+or
+.Xr rm 1 ,
+it will print the command to
+.Li stdout .
+This is controlled with the
+.Fl g
+flag.
+Note that this will generate a script to create an exact replica of the
+synchronization, including tags, host-specific files, and dotfiles directories.
+.Pp
+.Dl env RCRC=/dev/null rcup -B 0 -g > install.sh
+.Pp
+Using the above command, you can now run
+.Li install.sh
+to install (or re-install) your rc files.
+The
+.Li install.sh
+script can be stored in your dotfiles directory, copied between computers, and
+so on.
+.
+.Sh RATIONALE
+The rcm suite was built as an abstraction over the shell, Ruby, Python,
+and make scripts people were writing and sharing. It is intended to run
+on any unix system and support the range from simple to complex dotfile
+directories.
+.Pp
+As such, this suite is useful as a common base. Through this we can
+share tools and develop this further as a first-class entity. It is also
+our hope that a common set of tools will encourage others to share their
+dotfiles, too.
+.Sh FILES
+.Pa ~/.dotfiles
+.Pa ~/.rcrc
+.Sh SEE ALSO
+.Xr lsrc 1 ,
+.Xr mkrc 1 ,
+.Xr rcdn 1 ,
+.Xr rcup 1 ,
+.Xr rcrc 5
+.Sh AUTHORS
+.Nm
+is maintained by
+.An "Mike Burns" Aq Mt mburns@thoughtbot.com
+and
+.Lk http://thoughtbot.se thoughtbot
+.Sh BUGS
+For macOS systems, we strongly encourage the use of the
+.Va HOSTNAME
+variable in your
+.Xr rcrc 5 .
+We use the
+.Xr hostname 1
+program to determine the unique identifier for the host. This program is
+not specified by POSIX and can vary by system. On macOS, the hostname is
+unpredictable, and can even change as part of the DHCP handshake.
+.Sh CONTRIBUTORS
+.An -split
+.An "Alan Yee" Aq Mt alyee@ucsd.edu
+.An "Andrei Dziahel" Aq Mt develop7@develop7.info
+.An "Anton Ilin" Aq Mt anton@ilin.dn.ua
+.An "Ben Stephens" Aq Mt BKStephens@outlook.com
+.An "Ben Turrubiates" Aq Mt ben@turrubiat.es
+.An "Blake Williams" Aq Mt blake@blakewilliams.me
+.An "Caleb Land" Aq Mt caleb@land.fm
+.An "Carl van Tonder" Aq Mt carl@supervacuo.com
+.An "Casey Rodarmor" Aq Mt casey@rodarmor.com
+.An "Christian Höltje" Aq Mt docwhat@gerf.org
+.An "Christian Höltje" Aq Mt docwhat@gerf.org
+.An "Christopher Koch" Aq Mt ckoch@cs.nmt.edu
+.An "Dan Croak" Aq Mt dan@thoughtbot.com
+.An "Daniel Watson" Aq Mt dwatson@thig.com
+.An "David Alexander" Aq Mt davidpaulalexander@gmail.com
+.An "Devraj Mehta" Aq Mt devm33@gmail.com
+.An "Edd Salkield" Aq Mt edd@salkield.uk
+.An "Eric Collins" Aq Mt eric@tabfugni.cc
+.An "Florian Tham" Aq Mt fgtham@gmail.com
+.An "George Brocklehurst" Aq Mt george@thoughtbot.com
+.An "Graham Bennett" Aq Mt graham@simulcra.org
+.An "Jarkko Kniivilä" Aq Mt jkniiv@gmail.com
+.An "Jason Daniel Augustine Gilliland" Aq Mt jdagilliland@gmail.com
+.An "Javier López" Aq Mt linux.kitten@gmail.com
+.An "Joe Ferris" Aq Mt jferris@thoughtbot.com
+.An "John Axel Eriksson" Aq Mt john@insane.se
+.An "Jordan Eldredge" Aq Mt jordaneldredge@gmail.com
+.An "Leonardo Brondani Schenkel" Aq Mt leonardo@schenkel.net
+.An "Martin Frost" Aq Mt frost@ceri.se
+.An "Mat M" Aq Mt matm@gmx.fr
+.An "Matthew Horan" Aq Mt matt@matthoran.com
+.An "Melissa Xie" Aq Mt melissa@thoughtbot.com
+.An "Michael Reed" Aq Mt supertron421@gmail.com
+.An "Mike Burns" Aq Mt mburns@thoughtbot.com
+.An "Mike Burns and Eric Collins" Aq Mt mburns@thoughtbot.com
+.An "Nick Novitski" Aq Mt github@nicknovitski.com
+.An "Pablo Olmos de Aguilera Corradini" Aq Mt pablo@glatelier.org
+.An "Patrick Brisbin" Aq Mt pat@thoughtbot.com
+.An "Rafael Santos" Aq Mt formigarafa@gmail.com
+.An "Rebecca Meritz" Aq Mt rebecca@meritz.com
+.An "Roberto Pedroso" Aq Mt roberto@rpedroso.com
+.An "Scott Stevenson" Aq Mt scott@stevenson.io
+.An "Stephen" Aq Mt stephengroat@users.noreply.github.com
+.An "Teo Ljungberg" Aq Mt teo@teoljungberg.com
+.An "Tyson Gach" Aq Mt tyson@tysongach.com
+.An "Vlad GURDIGA" Aq Mt gurdiga@gmail.com
+.An "Yota Toyama" Aq Mt raviqqe@gmail.com
+.An "Zach Latta" Aq Mt zach@zachlatta.com
+.An "kajisha" Aq Mt kajisha@gmail.com
+.An "maxice8" Aq Mt thinkabit.ukim@gmail.com
+.An "subpop" Aq Mt subpop@users.noreply.github.com
+.An "wplatter-cb" Aq Mt 39812934+wplatter-cb@users.noreply.github.com

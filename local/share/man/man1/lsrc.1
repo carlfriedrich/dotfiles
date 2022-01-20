@@ -1,0 +1,192 @@
+.Dd December 23, 2016
+.Dt LSRC 1
+.Os
+.Sh NAME
+.Nm lsrc
+.Nd show dotfiles files managed by rcm
+.Sh SYNOPSIS
+.Nm lsrc
+.Op Fl FhqVv
+.Op Fl B Ar hostname
+.Op Fl d Ar dir
+.Op Fl I Ar excl_pat
+.Op Fl S Ar excl_pat
+.Op Fl s Ar excl_pat
+.Op Fl t Ar tag
+.Op Fl U Ar excl_pat
+.Op Fl u Ar excl_pat
+.Op Fl x Ar excl_pat
+.Op files ...
+.Sh DESCRIPTION
+This program lists all configuration files, both the sources in the
+dotfiles directories and the destinations in your home directory.
+.
+See
+.Xr rcup 1 ,
+the
+.Sx DIRECTORY LAYOUT
+section, for details on the directory layout.
+.
+It supports these options:
+.
+.Bl -tag -width "-I excl_pat"
+.It Fl B Ar HOSTNAME
+treat
+.Pa host-HOSTNAME
+as the host-specific directory instead of computing it based on the
+computer's hostname
+.It Fl d Ar DIR
+list dotfiles from the DIR. This can be specified multiple times.
+.
+.It Fl F
+show symbols next to each file indicating status information. Supported
+symbols are
+.Li @
+which indicates that the file is a symlink,
+.Li $
+which indicates it's a symlinked directory, and
+.Li X
+to indicate that the file is a copy. More details on copied files and
+symlinked directories can be found in
+.Xr rcrc 5
+under the documentation on
+.Va COPY_ALWAYS
+and
+.Va SYMLINK_DIRS ,
+respectively.
+.
+.It Fl h
+show usage instructions.
+.
+.It Fl I Ar excl_pat
+include the files that match the given pattern. This is applied after
+any
+.Fl x
+options. It uses the same pattern language as
+.Fl x ;
+more details are in the
+.Sx EXCLUDE PATTERN
+section. Note that you may have to quote the exclude pattern so the
+shell does not evaluate the glob.
+.
+.It Fl S Ar excl_pat
+symlink the directories that match the given pattern. See
+.Sx EXCLUDE PATTERN
+for more details. This option can be repeated. You may need to quote the
+pattern to prevent the shell from swallowing the glob.
+.
+.It Fl s Ar excl_pat
+if a directory matches the given pattern, recur inside of it instead of
+symlinking. See
+.Sx EXCLUDE PATTERN
+for more details. This is the opposite of the
+.Fl S
+option, and can be used to undo it or the
+.Va SYMLINK_DIRS
+setting in your
+.Xr rcrc 5
+configuration. It can be repeated, and the pattern may need to be quoted to
+protect it from your shell.
+.
+.It Fl t Ar TAG
+list dotfiles according to TAG
+.
+.It Fl U Ar excl_pat
+the rc files or directories matching this pattern will not be symlinked or
+created with a leading dot. See
+.Sx EXCLUDE PATTERN
+for more details. This option can be repeated. You may need to quote the
+pattern to prevent the shell from swallowing the glob.
+.
+.It Fl u Ar excl_pat
+if an rc file or directory matches the given pattern, it must be dotted. See
+.Sx EXCLUDE PATTERN
+for more details. This is the opposite of the
+.Fl U
+option, and can be used to undo it or the
+.Va UNDOTTED
+setting in your
+.Xr rcrc 5
+configuration. This option can be repeated. You may need to quote the
+pattern to prevent the shell from swallowing the glob.
+.
+.It Fl V
+show the version number.
+.
+.It Fl v
+increase verbosity. This can be repeated for extra verbosity.
+.
+.It Fl q
+decrease verbosity
+.
+.It Fl x Ar excl_pat
+exclude the files that match the given pattern. See
+.Sx EXCLUDE PATTERN
+for more details. This option can be repeated. Quote the pattern if it
+contains a valid shell glob.
+.
+.It Ar files ...
+only list the specified file(s)
+.El
+.Sh EXCLUDE PATTERN
+The exclude pattern specifies a colon-separated pair of dotfiles
+directory and file glob. The dotfiles directory is optional and, if
+omitted, defaults to
+.Li * ,
+which is a special token that matches any dotfiles directory. The file
+glob is relative to the dotfiles directory, ignoring meta directories. A
+colon combines them.
+.
+.Pp
+For example, to ignore all emacs-related items from the
+.Pa thoughtbot-dotfiles
+directory, use the exclude pattern:
+.Pp
+.Dl thoughtbot-dotfiles:*emacs*
+.Pp
+To ignore any
+.Pa bash_profile
+file, use the pattern:
+.Pp
+.Dl *:bash_profile
+.Pp
+Or more simply:
+.Pp
+.Dl bash_profile
+.Pp
+.
+Since exclude patterns are often valid shell globs, be sure to quote
+them. See the caveats noted in
+.Sx BUGS
+when using an exclude pattern.
+.Sh ENVIRONMENT
+.Bl -tag -width ".Ev RCRC"
+.It Ev RCRC
+User configuration file. Defaults to
+.Pa ~/.rcrc .
+.El
+.Sh FILES
+.Pa ~/.dotfiles
+.Pa ~/.rcrc
+.Sh SEE ALSO
+.Xr mkrc 1 ,
+.Xr rcdn 1 ,
+.Xr rcup 1 ,
+.Xr rcrc 5 ,
+.Xr rcm 7
+.Sh AUTHORS
+.Nm
+is maintained by
+.An "Mike Burns" Aq Mt mburns@thoughtbot.com
+and
+.Lk http://thoughtbot.se thoughtbot
+.Sh BUGS
+For macOS systems, we strongly encourage the use of the
+.Va HOSTNAME
+variable in your
+.Xr rcrc 5 .
+We use the
+.Xr hostname 1
+program to determine the unique identifier for the host. This program is
+not specified by POSIX and can vary by system. On macOS the hostname is
+unpredictable, and can even change as part of the DHCP handshake.

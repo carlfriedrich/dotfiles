@@ -1,0 +1,104 @@
+.Dd July 28, 2013
+.Dt RCRC 5
+.Os
+.Sh NAME
+.Nm rcrc
+.Nd configuration for rcm
+.Sh SYNOPSIS
+.Sm off
+.Ns Ev X
+.Ns =
+.Ns Qo
+.Va a\ \&
+.Va b\ \&
+.Va c
+.Qc
+.Sm on
+.Sh DESCRIPTION
+The rcm dotfile manager can be configured using a
+.Pa .rcrc
+file in your home directory. This location can be changed by setting the
+.Pa RCRC
+environment variable. The format is POSIX shell. It is sourced in by the
+.Xr lsrc 1 ,
+.Xr mkrc 1 ,
+.Xr rcdn 1 ,
+and
+.Xr rcup 1
+programs.
+.Pp
+It supports these variables:
+.Bl -tag -width "DOTFILES_DIRS"
+.It Va COPY_ALWAYS
+always copy files that match the listed globs, never symlink them.
+.
+.It Va DOTFILES_DIRS
+the source directories for dotfiles. The first in the list is the
+source to which dotfiles created using
+.Xr mkrc 1
+are installed. The default value is
+.Pa ~/.dotfiles
+.
+.It Va EXCLUDES
+a space-separated list of exclude patterns. Exclude patterns are
+explained in detail in
+.Xr lsrc 1
+under the section
+.Sx EXCLUDE PATTERN .
+.
+.It Va HOSTNAME
+the hostname for this computer. This is normally computed using the
+.Xr hostname 1
+command, but this command is non-standard and can prove unreliable. The
+.Va HOSTNAME
+variable forces a known hostname.
+.It Va TAGS
+the default tags.
+.
+.It Va SYMLINK_DIRS
+a space-separated list of patterns. Directories matching a pattern are
+symlinked instead of descended. Patterns are explained in detail in
+.Xr lsrc 1
+under the section
+.Sx EXCLUDE PATTERN .
+.
+.It Va UNDOTTED
+a space separated list of patterns. Files matching this pattern
+will be symlinked without a leading dot. If a file is also in
+.Va SYMLINK_DIRS ,
+then the directory will be symlinked without a leading dot.
+Patterns are explained in detail in
+.Xr lsrc 1
+under the section
+.Sx EXCLUDE PATTERN .
+.
+.El
+.Sh FILES
+.Pa ~/.rcrc
+.Sh EXAMPLES
+.Dl COPY_ALWAYS="ssh/id_* weechat/* netrc"
+.Dl COPY_ALWAYS="*"
+.Dl DOTFILES_DIRS="/home/mike/.dotfiles /usr/share/dotfiles"
+.Dl EXCLUDES="irbrc *:*emacs* dotfiles:python*"
+.Dl HOSTNAME="eggplant"
+.Dl TAGS="freebsd development email git laptop gmail notmuch"
+.Dl SYMLINK_DIRS="zprezto texmf"
+.Dl UNDOTTED="texmf"
+.Sh SEE ALSO
+.Xr lsrc 1 ,
+.Xr mkrc 1 ,
+.Xr rcdn 1 ,
+.Xr rcup 1 ,
+.Xr rcm 7
+.Sh AUTHORS
+.Nm
+is maintained by
+.An "Mike Burns" Aq Mt mburns@thoughtbot.com
+and
+.Lk http://thoughtbot.se thoughtbot
+.Sh BUGS
+We only expand tilde inside
+.Va DOTFILES_DIRS
+and not inside any patterns. For more notes on the caution you should
+exercise around patterns, see the BUGS section of
+.Xr lsrc 1 .

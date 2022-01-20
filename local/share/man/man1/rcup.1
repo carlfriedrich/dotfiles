@@ -1,0 +1,265 @@
+.Dd July 28, 2013
+.Dt RCUP 1
+.Os
+.Sh NAME
+.Nm rcup
+.Nd update and install dotfiles managed by rcm
+.Sh SYNOPSIS
+.Nm rcup
+.Op Fl CfhiKkqVv
+.Op Fl B Ar hostname
+.Op Fl d Ar dir
+.Op Fl g
+.Op Fl I Ar excl_pat
+.Op Fl S Ar excl_pat
+.Op Fl s Ar excl_pat
+.Op Fl t Ar tag
+.Op Fl U Ar excl_pat
+.Op Fl u Ar excl_pat
+.Op Fl x Ar excl_pat
+.Op Ar files ...
+.Sh DESCRIPTION
+This is a program to update and install personal dotfiles. These
+dotfiles are managed in a separate directory. Use
+.Nm rcup
+to install files from your dotfiles directories or from host- or
+tag-specific directories within.
+.Pp
+See
+.Sx DIRECTORY LAYOUT
+for details on the directory layout.
+.Pp
+It supports these options:
+.Bl -tag -width "-x EXCL_PAT"
+.It Fl B Ar HOSTNAME
+treat
+.Pa host-HOSTNAME
+as the host-specific directory instead of computing it
+.It Fl C
+copy the files instead of symlinking them
+.It Fl d Ar DIR
+install dotfiles from the
+.Ar DIR .
+This can be specified multiple times.
+.It Fl f
+if the rc file already exists in your home directory but does not match
+the file in your dotfiles directory, remove the rc file then create the
+symlink
+.It Fl g
+print to
+.Li stdout
+a standalone shell script that will run the
+.Nm
+command as specified.
+Nothing on your filesystem will be modified by
+.Nm
+when this flag is passed.
+.It Fl h
+show usage instructions.
+.It Fl I Ar EXCL_PAT
+install rc files that match
+.Ar EXCL_PAT
+despite being excluded by the
+.Fl x
+flag or a setting in
+.Xr rcrc 5 .
+This can be repeated with additional patterns. See
+.Xr lsrc 1 ,
+.Sx EXCLUDE PATTERN ,
+for more details.
+.It Fl i
+if the rc file already exists in your home directory but does not match
+the file in your dotfiles directory, prompt for how to handle it. This
+is the default
+.It Fl K
+skip pre- and post-hooks
+.It Fl k
+run pre- and post-hooks (see
+.Sx DIRECTORY LAYOUT
+for more details on hooks). This is the default.
+.It Fl S Ar EXCL_PAT
+any rc file that matches
+.Ar EXCL_PAT
+is installed as if it were a file (using a symlink) instead of as if it
+were a directory (by making a directory). This option can be repeated.
+.It Fl s Ar EXCL_PAT
+any file that matches
+.Ar EXCL_PAT
+is installed as normal, in accordance with the
+.Sx ALGORITHM
+section below. This is the opposite of
+.Fl S .
+This option can be repeated.
+.It Fl t Ar TAG
+install dotfiles according to
+.Ar TAG
+.It Fl U Ar EXCL_PAT
+any rc file that matches
+.Ar EXCL_PAT
+is installed without a leading dot. This option can be repeated. See the
+documentation of the
+.Fl U
+option in
+.Xr lsrc 1
+for more information.
+.It Fl u Ar EXCL_PAT
+any rc file that matches
+.Ar EXCL_PAT
+is installed with a leading dot. This is the opposite of
+.Fl U .
+This option can be repeated. This is the default. See the documentation of the
+.Fl u
+option in
+.Xr lsrc 1
+for more information.
+.It Fl q
+decrease verbosity
+.It Fl V
+show the version number.
+.It Fl v
+increase verbosity.
+This can be repeated for extra verbosity.
+Verbose messages are printed to
+.Li stderr .
+.It Fl x Ar EXCL_PAT
+do not install rc files that match
+.Ar EXCL_PAT .
+This can be repeated with additional patterns. See
+.Xr lsrc 1 ,
+.Sx EXCLUDE PATTERN ,
+for more details.
+.It Ar files
+only install the specified file(s)
+.El
+.Sh DIRECTORY LAYOUT
+Any non-dot non-meta file or directory under your dotfiles directory will be
+installed as a dotfile. For example,
+.Pa .dotfiles/zshrc
+will be installed into
+.Pa ~/.zshrc
+\&.
+.Pp
+Files are installed as symlinks. Directories are installed by making
+directories. The
+.Fl C
+flag causes files to be installed as copies instead of symlinks. The
+.Va COPY_ALWAYS
+option in
+.Xr rcrc 5
+can be used to list files that must only be copied.
+.Pp
+Three meta files are supported: host-specific files, tagged files,
+hooks.
+.Pp
+Host-specific files go in a directory named for the host, prefixed with
+.Pa host- .
+For example,
+.Pa .dotfiles/host-scarlett
+contains files specific to the computer with hostname
+.Pa scarlett ,
+and these files will only be installed on the computer with hostname
+.Pa scarlett .
+.Pp
+Tagged files go in a directory named for the tag, prefixed with
+.Li tag- .
+Therefore, files under
+.Pa .dotfiles/tag-git
+are only installed when installing using the
+.Li git
+tag.
+.Pp
+Hooks go in a directory named
+.Pa hooks .
+Two hooks are supported by
+.Nm rcup :
+pre-up and post-up. These go in files or directories with predictable filenames:
+.Pa .dotfiles/hooks/pre-up
+and
+.Pa .dotfiles/hooks/post-up ,
+or
+.Pa .dotfiles/hooks/pre-up/*
+and
+.Pa .dotfiles/hooks/post-up/* .
+These files must be executable. They are run every time
+.Nm
+is run, and therefore must be idempotent.
+.Pp
+Hooks will be executed one at a time, sorted alphabetically. For instance,
+.Pa hooks/pre-up/animals
+will run before
+.Pa hooks/pre-up/aquariums ,
+and
+.Pa hooks/pre-up/4-eyes
+will run before
+.Pa hooks/post-up/2-u-nothing-compares .
+.Sh ALGORITHM
+It is instructive to understand the process
+.Nm rcup
+uses when synchronizing your rc files:
+.Bl -enum
+.It
+The pre-up hook is run.
+.
+.It
+All non-host, non-tag files without a dot prefix are symlinked to the
+dotted filename in your home directory. So,
+.Pa .dotfiles/tigrc
+is
+symlinked to
+.Pa ~/.tigrc .
+.
+.It
+All non-host, non-tag directories have their structure copied to your
+home directory, then a non-dotted symlink is created within.  So for
+example,
+.Pa .dotfiles/vim/autoload/haskell.vim
+causes the
+.Pa ~/.vim/autoload
+directory to be created, then
+.Pa haskell.vim
+is symlinked within.
+.
+.It
+Steps (2) and (3) are applied to host-specific files. These are files
+under a directory named
+.Sm off
+.Pa host- Va $HOSTNAME .
+.Sm on
+.
+.It
+Steps (2) and (3) are applied to tag-specific files. These are files
+under directories named
+.Sm off
+.Pa tag- Va $TAG_NAME ,
+.Sm on
+where
+.Va $TAG_NAME
+is the name of each specified tag in turn, taken from the command line
+or from
+.Xr rcrc 5 .
+.
+.It
+The post-up hook is run.
+.El
+.
+.Sh ENVIRONMENT
+.Bl -tag -width ".Ev RCRC"
+.It Ev RCRC
+User configuration file. Defaults to
+.Pa ~/.rcrc .
+.El
+.Sh FILES
+.Pa ~/.dotfiles
+.Pa ~/.rcrc
+.Sh SEE ALSO
+.Xr lsrc 1 ,
+.Xr mkrc 1 ,
+.Xr rcdn 1 ,
+.Xr rcrc 5 ,
+.Xr rcm 7
+.Sh AUTHORS
+.Nm
+is maintained by
+.An "Mike Burns" Aq Mt mburns@thoughtbot.com
+and
+.Lk http://thoughtbot.se thoughtbot
