@@ -1,0 +1,20 @@
+[core]
+	# Use VS code as editor
+	editor = code --wait
+
+[gc]
+	# Don't run garbage collector in background
+	autoDetach = false
+
+[alias]
+	c = commit --verbose
+	can = commit --amend --no-edit
+	d = diff
+	fc = fetch changes
+	l = log
+	p = pull --prune
+	s = status
+
+[include]
+	# Allow local customizations in the .gitconfig_local file
+	path = ~/.gitconfig_local
