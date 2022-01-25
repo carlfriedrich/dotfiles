@@ -90,3 +90,8 @@ fi
 
 # Set default editor
 export EDITOR=tilde
+
+# Allow local customizations in the ~/.bashrc_local file
+if [ -f ~/.bashrc_local ]; then
+    source ~/.bashrc_local
+fi
