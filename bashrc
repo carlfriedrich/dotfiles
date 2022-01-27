@@ -81,6 +81,9 @@ fi
 # Set default editor
 export EDITOR=tilde
 
+# Enable z
+source ~/.local/share/z/z.sh
+
 # Allow local customizations in the ~/.bashrc_local file
 if [ -f ~/.bashrc_local ]; then
     source ~/.bashrc_local
