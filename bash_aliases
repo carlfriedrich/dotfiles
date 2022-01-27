@@ -10,6 +10,8 @@ alias egrep='egrep --color=auto'
 # -C vertical columns layout (default)
 # -F append indicator (one of */=>@|) to entries
 # -l detailed listing
-alias ll='ls -alF'
-alias la='ls -A'
+# -v dotfiles first
+# -h human-readable size
+alias ll='ls -alFhv'
+alias la='ls -Av'
 alias l='ls -CF'
