@@ -1,8 +1,6 @@
-# ~/.bashrc: executed by bash(1) for non-login shells.
-# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
-# for examples
-
 # If not running interactively, don't do anything
+# This is crucial for correct functioning of scp, as explained here:
+# https://unix.stackexchange.com/q/257571/317320
 case $- in
     *i*) ;;
       *) return;;
