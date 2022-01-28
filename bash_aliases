@@ -15,3 +15,8 @@ alias egrep='egrep --color=auto'
 alias ll='ls -alFhv'
 alias la='ls -Av'
 alias l='ls -CF'
+
+# Use verbose mode on rcm commands
+alias mkrc='mkrc -v'
+alias rcup='rcup -v'
+alias rcdn='rcdn -v'
