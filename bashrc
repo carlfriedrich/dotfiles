@@ -15,12 +15,21 @@ esac
 # Don't put duplicate lines or lines starting with space in the history
 HISTCONTROL=ignoreboth
 
+# Add timestamps to history
+HISTTIMEFORMAT='%F %T '
+
+# History size
+HISTSIZE=1000000
+
+# Save each command to the history file right after running it
+export PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
+
 # Append to the history file, don't overwrite it
 shopt -s histappend
 
-# History size
-HISTSIZE=1000
-HISTFILESIZE=2000
+# Save all lines of a multiple-line command in the same entry
+shopt -s cmdhist
+shopt -s lithist
 
 # Check the window size after each command and update LINES and COLUMNS
 shopt -s checkwinsize

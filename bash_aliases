@@ -38,3 +38,6 @@ alias tree='exa --tree'
 alias mkrc='mkrc -v'
 alias rcup='rcup -v'
 alias rcdn='rcdn -v'
+
+# History reload (to have history of other running shells)
+alias hr='history -c; history -r'
