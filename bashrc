@@ -81,6 +81,9 @@ fi
 # Set default editor
 export EDITOR=tilde
 
+# Display exa date in grey and size in white
+export EXA_COLORS="da=38;5;246:sn=1;38:sb=1;38"
+
 # Enable z
 source ~/.local/share/z/z.sh
 

@@ -16,6 +16,17 @@ alias ll='ls -alFhv'
 alias la='ls -Av'
 alias l='ls -CF'
 
+# Replace ls and tree commands with exa
+# -a include files starting with .
+# -g display group ownership
+# -l detailed listing
+alias exa='exa --group-directories-first'
+alias ls='exa'
+alias ll='exa -lag --git --icons --time-style=long-iso'
+alias la='exa -a'
+alias l='exa'
+alias tree='exa --tree'
+
 # Use verbose mode on rcm commands
 alias mkrc='mkrc -v'
 alias rcup='rcup -v'
