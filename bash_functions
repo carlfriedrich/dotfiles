@@ -6,6 +6,7 @@
 # Source: https://superuser.com/a/1613931/1036029
 #-------------------------------------------------------------------------------
 VARIABLES="\
+    VSCODE_GIT_IPC_HANDLE \
     VSCODE_GIT_ASKPASS_NODE \
     VSCODE_GIT_ASKPASS_MAIN \
     VSCODE_IPC_HOOK_CLI \
