@@ -49,3 +49,19 @@ unalias screen 2> /dev/null
 if ! ${IN_SCREEN:-false}; then
     alias screen='savescreenenv && IN_SCREEN=true screen'
 fi
+
+#-------------------------------------------------------------------------------
+# man
+#-------------------------------------------------------------------------------
+# Add colors to man pages. Source:
+# https://www.howtogeek.com/683134/how-to-display-man-pages-in-color-on-linux/
+#-------------------------------------------------------------------------------
+man() {
+    LESS_TERMCAP_md=$'\e[01;31m' \
+    LESS_TERMCAP_me=$'\e[0m' \
+    LESS_TERMCAP_us=$'\e[01;32m' \
+    LESS_TERMCAP_ue=$'\e[0m' \
+    LESS_TERMCAP_so=$'\e[00;34m' \
+    LESS_TERMCAP_se=$'\e[0m' \
+    command man "$@"
+}
