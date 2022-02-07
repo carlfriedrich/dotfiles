@@ -41,3 +41,6 @@ alias rcdn='rcdn -v'
 
 # History reload (to have history of other running shells)
 alias hr='history -c; history -r'
+
+# Reload .bashrc
+alias sbrc='source ~/.bashrc'
