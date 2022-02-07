@@ -27,11 +27,12 @@ alias l='ls -CF'
 # -a include files starting with .
 # -g display group ownership
 # -l detailed listing
+# -F display type indicator (e.g. "/" on directories)
 alias exa='exa --group-directories-first'
-alias ls='exa'
-alias ll='exa -lag --git --icons --time-style=long-iso'
-alias la='exa -a'
-alias l='exa'
+alias ls='exa -F'
+alias ll='exa -lagF --git --icons --time-style=long-iso'
+alias la='exa -aF'
+alias l='exa -F'
 alias tree='exa --tree'
 
 # Use verbose mode on rcm commands
