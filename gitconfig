@@ -12,6 +12,7 @@
 	d = diff
 	fc = fetch changes
 	l = log
+	ll = log --oneline --pretty=format:'%C(yellow)%h%C(reset)  %C(white)%s%C(reset)%C(auto)%d%C(reset) %C(dim white) %an, %ar%C(reset)'
 	p = pull --prune
 	s = status
 
