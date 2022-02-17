@@ -11,7 +11,14 @@
 	can = commit --amend --no-edit
 	d = diff
 	fc = fetch changes
-	l = log
+	# Modify standard git log output:
+	# - print author and date in dim white
+	# - use ISO 8601 date format
+	l = log --pretty=format:'%C(yellow)commit %H%C(reset)%C(auto)%d%C(reset)\
+		\n%C(dim white)Author: %an <%ae>%C(reset)\
+		\n%C(dim white)Date:   %ai%C(reset)\
+		\n\n%C(white)%w(80,4,4)%s\
+		\n\n%w(80,4,4)%b%-C()%n%C(reset)'
 	ll = log --oneline --pretty=format:'%C(yellow)%h%C(reset)  %C(white)%s%C(reset)%C(auto)%d%C(reset) %C(dim white) %an, %ar%C(reset)'
 	p = pull --prune
 	s = status
