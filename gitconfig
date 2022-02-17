@@ -23,6 +23,11 @@
 	p = pull --prune
 	s = status
 
+[tig "color"]
+	title-blur = 0 7 bold
+	title-focus = 0 7 bold
+	cursor = default 237 bold
+
 [include]
 	# Allow local customizations in the .gitconfig_local file
 	path = ~/.gitconfig_local
