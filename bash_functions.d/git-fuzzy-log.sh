@@ -24,6 +24,6 @@ git-fuzzy-log ()
 {
 	git log --graph --color=always --format="%C(auto)%h %s%d " | \
 		fzf --ansi --no-sort --reverse --tiebreak=index \
-		--preview "${GIT_FL_PREVIEW_COMMAND}" --preview-window=bottom:30% \
+		--preview "${GIT_FL_PREVIEW_COMMAND}" --preview-window=top:15 \
 		--bind "${GIT_FL_KEYBINDINGS}"
 }
