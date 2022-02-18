@@ -66,8 +66,10 @@ fi
 #-------------------------------------------------------------------------------
 # Functions
 #-------------------------------------------------------------------------------
-if [ -f ~/.bash_functions ]; then
-    . ~/.bash_functions
+if [ -d ~/.bash_functions.d ]; then
+    for file in ~/.bash_functions.d/*; do
+        . ${file}
+    done
 fi
 
 #-------------------------------------------------------------------------------
@@ -105,9 +107,6 @@ IMMEDIATE_FILES="README README* *.ninja Makefile Cargo.toml SConstruct \
 for immediate_file in ${IMMEDIATE_FILES}; do
     export EXA_COLORS="${EXA_COLORS}:${immediate_file}=${IMMEDIATE_STYLE}"
 done
-
-# Enable z
-source ~/.local/share/z/z.sh
 
 # Allow local customizations in the ~/.bashrc_local file
 if [ -f ~/.bashrc_local ]; then
