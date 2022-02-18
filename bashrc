@@ -98,6 +98,9 @@ source ~/.local/share/fzf/key-bindings.bash
 # Set default editor
 export EDITOR=tilde
 
+# Add cargo packages to PATH
+PATH=${HOME}/.cargo/bin:${PATH}
+
 # exa colors
 # Date in grey and size in white
 export EXA_COLORS="da=38;5;246:sn=0;38:sb=0;38"
