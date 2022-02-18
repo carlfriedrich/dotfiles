@@ -5,7 +5,7 @@
 # https://gist.github.com/junegunn/f4fca918e937e6bf5bad?permalink_comment_id=2731105#gistcomment-2731105
 #-------------------------------------------------------------------------------
 GIT_FL_ENTER_COMMAND="(grep -o '[a-f0-9]\{7\}' | head -1 |
-	xargs -I % sh -c 'git show --color=always % | less -R') << 'FZF-EOF'
+	xargs -I % sh -c 'git show --color=always % | diff-so-fancy | less --tabs=4 -R') << 'FZF-EOF'
 	{}
 FZF-EOF"
 GIT_FL_PREVIEW_COMMAND='f() { \

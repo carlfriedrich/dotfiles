@@ -1,6 +1,12 @@
 [core]
 	# Use VS code as editor
 	editor = code --wait
+	# Use diff-so-fancy for diffs
+	pager = diff-so-fancy | less --tabs=4 -RFX
+
+[interactive]
+	# Use diff-so-fancy for diffs
+	diffFilter = diff-so-fancy --patch
 
 [gc]
 	# Don't run garbage collector in background
@@ -21,6 +27,8 @@
 		\n\n%C(white)%w(80,4,4)%s\
 		\n\n%w(80,4,4)%b%-C()%n%C(reset)'
 	ll = log --oneline --pretty=format:'%C(yellow)%h%C(reset)  %C(white)%s%C(reset)%C(auto)%d%C(reset) %C(dim white) %an, %ar%C(reset)'
+	# Bypass diff-so-fancy
+	patch = !git --no-pager diff
 	p = pull --prune
 	s = status
 
@@ -28,6 +36,19 @@
 	title-blur = 0 7 bold
 	title-focus = 0 7 bold
 	cursor = default 237 bold
+
+[diff-so-fancy]
+	markEmptyLines = false
+
+[color "diff-highlight"]
+	oldNormal = red
+	oldHighlight = red
+	newNormal = green
+	newHighlight = green
+
+[color "diff"]
+	old = red
+	new = green
 
 [include]
 	# Allow local customizations in the .gitconfig_local file
