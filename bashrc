@@ -57,6 +57,17 @@ CYAN='\[\e[36m\]'
 PS1="${GREEN}\u@\h${RESET}:${BLUE}\w${RESET}\$ "
 
 #-------------------------------------------------------------------------------
+# Completion
+#-------------------------------------------------------------------------------
+if ! shopt -oq posix; then
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+  fi
+fi
+
+#-------------------------------------------------------------------------------
 # Aliases
 #-------------------------------------------------------------------------------
 if [ -f ~/.bash_aliases ]; then
