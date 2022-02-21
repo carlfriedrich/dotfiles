@@ -112,13 +112,13 @@ export EXA_COLORS="${EXA_COLORS}:di=0;34:ex=0;32"
 # This is unfortunately a hard-coded list in exa, so we have a long list here:
 # https://github.com/ogham/exa/blob/master/src/info/filetype.rs
 IMMEDIATE_STYLE="0;33"
-IMMEDIATE_FILES="README README* *.ninja Makefile Cargo.toml SConstruct \
-        CMakeLists.txt build.gradle pom.xml Rakefile package.json Gruntfile.js \
-        Gruntfile.coffee BUILD BUILD.bazel WORKSPACE build.xml Podfile \
-        webpack.config.js meson.build composer.json RoboFile.php PKGBUILD \
-        Justfile Procfile Dockerfile Containerfile Vagrantfile Brewfile \
-        Gemfile Pipfile build.sbt mix.exs bsconfig.json tsconfig.json"
-for immediate_file in ${IMMEDIATE_FILES}; do
+IMMEDIATE_FILES=(README "README*" "*.ninja" Makefile Cargo.toml SConstruct
+        CMakeLists.txt build.gradle pom.xml Rakefile package.json Gruntfile.js
+        Gruntfile.coffee BUILD BUILD.bazel WORKSPACE build.xml Podfile
+        webpack.config.js meson.build composer.json RoboFile.php PKGBUILD
+        Justfile Procfile Dockerfile Containerfile Vagrantfile Brewfile
+        Gemfile Pipfile build.sbt mix.exs bsconfig.json tsconfig.json)
+for immediate_file in "${IMMEDIATE_FILES[@]}"; do
     export EXA_COLORS="${EXA_COLORS}:${immediate_file}=${IMMEDIATE_STYLE}"
 done
 
