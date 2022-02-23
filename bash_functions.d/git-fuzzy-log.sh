@@ -8,12 +8,22 @@ git-fuzzy-log ()
 {
 	GIT_FL_PREVIEW_COMMAND='f() {
 		set -- $(echo -- "$@" | grep -o "[a-f0-9]\{7\}")
-		[ $# -eq 0 ] || git show --no-patch --color=always $1
+		[ $# -eq 0 ] || (
+			git show --no-patch --color=always $1
+			echo
+			git show --stat --format="" --color=always $1 |
+			while read line; do
+				tput dim
+				echo " $line" | sed "s/\x1B\[m/\x1B\[2m/g"
+				tput sgr0
+			done |
+			tac | sed "1 a \ " | tac
+		)
 	}; f {}'
 
 	GIT_FL_ENTER_COMMAND='(grep -o "[a-f0-9]\{7\}" | head -1 |
 		xargs -I % sh -c "git show --color=always % | diff-so-fancy | 
-		less --tabs=4 -R") << "FZF-EOF"
+		less --tabs=4 -R") <<- "FZF-EOF"
 		{}
 		FZF-EOF'
 
