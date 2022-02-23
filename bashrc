@@ -99,7 +99,7 @@ source ~/.local/share/fzf/key-bindings.bash
 export EDITOR=tilde
 
 # Add cargo packages to PATH
-PATH=${HOME}/.cargo/bin:${PATH}
+path_prepend ${HOME}/.cargo/bin
 
 # exa colors
 # Date in grey and size in white
