@@ -26,8 +26,26 @@ function exa()
         # And using custom 'column' implementation due to color codes:
         # https://stackoverflow.com/a/70513399/3018229
         # https://github.com/LukeSavefrogs/column_ansi
-        sed -E 's/^ *([^ ]*) *([^ ]*) *([^ ]*) *([^ ]*) *([^ ]* *[^ ]*) *(.*)$/\1\t\3\t\4\t\2\t\5\t\6/' | \
-        column_ansi -t -s $'\t' -o ' ' -R 4
+
+        # General column
+        C="([^ ]*)"
+
+        # Date column has two words
+        CDATE="([^ ]* *[^ ]*)"
+
+        # Git column needs special treatment because it is optional and has
+        # varying colours within the token
+        CGIT="([^ ]*[-NM][^ ]*[-NMI][^ ]*)?"
+
+        # Output order with tabs in between
+        OUT="\1\t\3\t\4\t\2\t\5\t\6\t\7"
+
+        # Parse columns and reorder them
+        sed -E "s/^$C +$C +$C +$C +$CDATE +$CGIT *(.*)$/$OUT/" | \
+        # Remove double tabs (occur when git column is not present)
+        sed -E 's/\t\t/\t/g' | \
+        # Display as beautiful table with two spaces and right-aligned size
+        column_ansi -t -s $'\t' -o '  ' -R 4
     }
 
     command exa ${COLOR_ARG} $@ | replace_git_icon | reorder_columns
