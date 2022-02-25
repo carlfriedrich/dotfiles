@@ -17,7 +17,8 @@
 	can = commit --amend --no-edit
 	d = diff
 	fc = fetch changes
-	fl = !bash -ic "git-fuzzy-log"
+	fd = !bash -ic 'git-fuzzy-diff \"$@\"' x
+	fl = !bash -ic 'git-fuzzy-log \"$@\"' x
 	# Modify standard git log output:
 	# - print author and date in dim white
 	# - use ISO 8601 date format

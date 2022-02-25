@@ -1,9 +1,36 @@
 #-------------------------------------------------------------------------------
-# git-fuzzy-log
+# git functions with fzf
 #-------------------------------------------------------------------------------
-# Provide an interactive git log using fzf. Based on:
+# Provide interactive git log and git diff using fzf. Based on:
 # https://gist.github.com/junegunn/f4fca918e937e6bf5bad?permalink_comment_id=2731105#gistcomment-2731105
+# https://medium.com/@GroundControl/better-git-diffs-with-fzf-89083739a9cb
 #-------------------------------------------------------------------------------
+git-fuzzy-diff ()
+{
+	PAGER="less --tabs=4 -Rc"
+	if [ -x "$(command -v diff-so-fancy)" ]; then
+		PAGER="diff-so-fancy | ${PAGER}"
+	fi
+
+	GIT_FD_PREVIEW_COMMAND="git diff --oneline --color=always $@ -- {} | ${PAGER}"
+
+	GIT_FD_ENTER_COMMAND="git diff --format="" --color=always $@ -- {} | ${PAGER}"
+
+	GIT_FD_KEYBINDINGS=(
+		"shift-down:preview-down"
+		"shift-up:preview-up"
+		"pgdn:preview-page-down"
+		"pgup:preview-page-up"
+		"q:abort"
+		"enter:execute:${GIT_FD_ENTER_COMMAND}"
+	)
+	GIT_FD_KEYBINDINGS=$(IFS=','; echo "${GIT_FD_KEYBINDINGS[*]}")
+
+	git diff --name-only $@ | \
+		fzf --ansi --reverse --exit-0 --preview "${GIT_FD_PREVIEW_COMMAND}" \
+		--preview-window=top:85% --bind "${GIT_FD_KEYBINDINGS}"
+}
+
 git-fuzzy-log ()
 {
 	GIT_FL_PREVIEW_COMMAND='f() {
@@ -22,12 +49,10 @@ git-fuzzy-log ()
 	}; f {}'
 
 	GIT_FL_ENTER_COMMAND='(grep -o "[a-f0-9]\{7\}" | head -1 |
-		xargs -I % sh -c "git show --color=always % | diff-so-fancy | 
-		less --tabs=4 -R") <<- "FZF-EOF"
+		xargs -I % bash -ic "git-fuzzy-diff %^1 %") <<- "FZF-EOF"
 		{}
 		FZF-EOF'
 
-	# Define keybindings in array and then convert it to a comma-separated list
 	GIT_FL_KEYBINDINGS=(
 		"shift-down:preview-down"
 		"shift-up:preview-up"
