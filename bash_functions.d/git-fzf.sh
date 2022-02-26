@@ -7,14 +7,24 @@
 #-------------------------------------------------------------------------------
 git-fuzzy-diff ()
 {
-	PAGER="less --tabs=4 -Rc"
+	GIT_FD_PREVIEW_PAGER="less --tabs=4 -Rc"
+	GIT_FD_ENTER_PAGER=${GIT_FD_PREVIEW_PAGER}
 	if [ -x "$(command -v diff-so-fancy)" ]; then
-		PAGER="diff-so-fancy | ${PAGER}"
+		GIT_FD_PREVIEW_PAGER="diff-so-fancy | ${GIT_FD_PREVIEW_PAGER}"
+		GIT_FD_ENTER_PAGER="diff-so-fancy | sed -e '1,4d' | ${GIT_FD_ENTER_PAGER}"
 	fi
 
-	GIT_FD_PREVIEW_COMMAND="git diff --oneline --color=always $@ -- {} | ${PAGER}"
+	# Don't just diff the selected file alone, get related files first using
+	# '--name-status -R' in order to include moves and renames in the diff.
+	# See for reference: https://stackoverflow.com/q/71268388/3018229
+	GIT_FD_PREVIEW_COMMAND='git diff --color=always '$@' -- \
+		$(echo $(git diff --name-status -R '$@' | grep {}) | cut -d" " -f 2-) \
+		| '$GIT_FD_PREVIEW_PAGER
 
-	GIT_FD_ENTER_COMMAND="git diff --format="" --color=always $@ -- {} | ${PAGER}"
+	# Show additional context compared to preview
+	GIT_FD_ENTER_COMMAND='git diff --color=always '$@' -U10000 -- \
+		$(echo $(git diff --name-status -R '$@' | grep {}) | cut -d" " -f 2-) \
+		| '$GIT_FD_ENTER_PAGER
 
 	GIT_FD_KEYBINDINGS=(
 		"shift-down:preview-down"
