@@ -95,6 +95,9 @@ source ~/.local/share/fzf/key-bindings.bash
 # Make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
+# Default options for less
+export LESS="--mouse --wheel-lines=4"
+
 # Set default editor
 export EDITOR=tilde
 
