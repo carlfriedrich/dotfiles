@@ -125,6 +125,9 @@ for immediate_file in "${IMMEDIATE_FILES[@]}"; do
     export EXA_COLORS="${EXA_COLORS}:${immediate_file}=${IMMEDIATE_STYLE}"
 done
 
+# bat colors
+export BAT_THEME="base16"
+
 # Allow local customizations in the ~/.bashrc_local file
 if [ -f ~/.bashrc_local ]; then
     source ~/.bashrc_local
