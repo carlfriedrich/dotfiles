@@ -5,6 +5,18 @@
 # https://gist.github.com/junegunn/f4fca918e937e6bf5bad?permalink_comment_id=2731105#gistcomment-2731105
 # https://medium.com/@GroundControl/better-git-diffs-with-fzf-89083739a9cb
 #-------------------------------------------------------------------------------
+GIT_FZF_DEFAULT_OPTS="
+	$FZF_DEFAULT_OPTS
+	--ansi
+	--reverse
+	--bind shift-down:preview-down
+	--bind shift-up:preview-up
+	--bind pgdn:preview-page-down
+	--bind pgup:preview-page-up
+	--bind q:abort
+	$GIT_FZF_DEFAULT_OPTS
+"
+
 git-fuzzy-diff ()
 {
 	PREVIEW_PAGER="less --tabs=4 -Rc"
@@ -26,19 +38,9 @@ git-fuzzy-diff ()
 		$(echo $(git diff --name-status -R '$@' | grep {}) | cut -d" " -f 2-) \
 		| '$ENTER_PAGER
 
-	KEYBINDINGS=(
-		"shift-down:preview-down"
-		"shift-up:preview-up"
-		"pgdn:preview-page-down"
-		"pgup:preview-page-up"
-		"q:abort"
-		"enter:execute:${ENTER_COMMAND}"
-	)
-	KEYBINDINGS=$(IFS=','; echo "${KEYBINDINGS[*]}")
-
 	git diff --name-only $@ | \
-		fzf --ansi --reverse --exit-0 --preview "${PREVIEW_COMMAND}" \
-		--preview-window=top:85% --bind "${KEYBINDINGS}"
+		fzf ${GIT_FZF_DEFAULT_OPTS} --exit-0 --preview "${PREVIEW_COMMAND}" \
+		--preview-window=top:85% --bind "enter:execute:${ENTER_COMMAND}"
 }
 
 git-fuzzy-log ()
@@ -63,18 +65,8 @@ git-fuzzy-log ()
 		{}
 		FZF-EOF'
 
-	KEYBINDINGS=(
-		"shift-down:preview-down"
-		"shift-up:preview-up"
-		"pgdn:preview-page-down"
-		"pgup:preview-page-up"
-		"q:abort"
-		"enter:execute:${ENTER_COMMAND}"
-	)
-	KEYBINDINGS=$(IFS=','; echo "${KEYBINDINGS[*]}")
-
 	git log --graph --color=always --format="%C(auto)%h %s%d " | \
-		fzf --ansi --no-sort --reverse --tiebreak=index \
+		fzf ${GIT_FZF_DEFAULT_OPTS} --no-sort --tiebreak=index \
 		--preview "${PREVIEW_COMMAND}" --preview-window=top:15 \
-		--bind "${KEYBINDINGS}"
+		--bind "enter:execute:${ENTER_COMMAND}"
 }
