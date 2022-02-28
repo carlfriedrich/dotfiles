@@ -40,6 +40,11 @@ alias mkrc='mkrc -v'
 alias rcup='rcup -v'
 alias rcdn='rcdn -v'
 
+# rcm variants for local dotfiles
+alias mkrcl='mkrc -d ~/.dotfiles-local'
+alias rcupl='rcup -d ~/.dotfiles-local'
+alias rcdnl='rcdn -d ~/.dotfiles-local'
+
 # History reload (to have history of other running shells)
 alias hr='history -c; history -r'
 
