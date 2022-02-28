@@ -9,6 +9,7 @@ GIT_FZF_DEFAULT_OPTS="
 	$FZF_DEFAULT_OPTS
 	--ansi
 	--reverse
+	--height=100%
 	--bind shift-down:preview-down
 	--bind shift-up:preview-up
 	--bind pgdn:preview-page-down

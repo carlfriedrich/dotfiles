@@ -104,6 +104,9 @@ export EDITOR=tilde
 # Add cargo packages to PATH
 path_prepend ${HOME}/.cargo/bin
 
+# Default options for fzf
+export FZF_DEFAULT_OPTS="--reverse --height=25%"
+
 # exa colors
 # Date in grey and size in white
 export EXA_COLORS="da=38;5;246:sn=0;38:sb=0;38"
