@@ -14,5 +14,5 @@ Run the following commands to install the dotfiles on a new machine:
 ```shell
 git clone https://github.com/carlfriedrich/dotfiles.git ~/.dotfiles
 RCRC=~/.dotfiles/rcrc PATH=~/.dotfiles/local/bin/:${PATH} ~/.dotfiles/local/bin/rcup -v
-exec bash
+exec bash -l
 ```
