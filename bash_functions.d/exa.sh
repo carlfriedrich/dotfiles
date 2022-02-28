@@ -3,7 +3,7 @@
 #-------------------------------------------------------------------------------
 # Modify exa output
 #-------------------------------------------------------------------------------
-function exa()
+function _exa()
 {
     # check if output is redirected
     # https://stackoverflow.com/q/26761627/3018229
@@ -53,6 +53,6 @@ function exa()
         column_ansi -t -s $'\t' -o '  ' -R 4
     }
 
-    command exa ${COLOR_ARG} $@ | replace_git_icon | reorder_columns | \
+    exa ${COLOR_ARG} $@ | replace_git_icon | reorder_columns | \
         remove_trailing_spaces
 }
