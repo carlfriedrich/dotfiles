@@ -169,8 +169,8 @@ __fz_fzf_prog() {
 __fz_filter() {
   fzf=$(__fz_fzf_prog)
 
-  FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} --reverse \
-    --bind 'shift-tab:up,tab:down' $FZF_DEFAULT_OPTS" ${=fzf}
+  FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-5} --reverse \
+    --bind 'shift-tab:up,tab:down' $FZF_DEFAULT_OPTS" ${fzf}
 }
 
 __fz_bash_completion() {
