@@ -18,6 +18,11 @@ function exa()
         sed 's/ / /g'
     }
 
+    function remove_trailing_spaces()
+    {
+        sed 's/ *$//'
+    }
+
     function reorder_columns()
     {
         # Move size between group and date
@@ -48,5 +53,6 @@ function exa()
         column_ansi -t -s $'\t' -o '  ' -R 4
     }
 
-    command exa ${COLOR_ARG} $@ | replace_git_icon | reorder_columns
+    command exa ${COLOR_ARG} $@ | replace_git_icon | reorder_columns | \
+        remove_trailing_spaces
 }
