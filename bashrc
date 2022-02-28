@@ -78,7 +78,7 @@ fi
 # Functions
 #-------------------------------------------------------------------------------
 if [ -d ~/.bash_functions.d ]; then
-    for file in ~/.bash_functions.d/*; do
+    for file in $(find ~/.bash_functions.d/* | LC_ALL=C sort); do
         . ${file}
     done
 fi
