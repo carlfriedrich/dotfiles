@@ -1,0 +1,17 @@
+style:
+  # Possible color values: https://bit.ly/3gloNNI
+  tag:
+    color: cyan
+    width_percentage: 10
+    min_width: 10
+  comment:
+    color: blue
+    width_percentage: 60
+  snippet:
+    color: grey
+    width_percentage: 40
+
+cheats:
+  paths: 
+    - ~/.local/share/navi/cheats/_mine
+    - ~/.local/share/navi/cheats/
