@@ -1,0 +1,30 @@
+# Turn visual bell off
+vbell off
+
+# Set terminal type in order to have colored prompt
+term xterm-256color
+
+# Change the xterm initialization string from is2=\E[!p\E[?3;4l\E[4l\E>
+# (This fixes the "Aborted because of window size change" konsole symptoms found
+#  in bug #134198)
+termcapinfo xterm* 'is=\E[r\E[m\E[2J\E[H\E[?7h\E[?1;4;6l'
+
+# Enable scrollback in PuTTY
+termcapinfo xterm* ti@:te@
+
+# Save copy & paste buffer in home dir instead of /tmp
+bufferfile $HOME/.screen-exchange
+
+# Enable alternate screen buffer
+# This is necessary to restore the screen content after quitting an editor
+altscreen on
+
+# Don't display the copyright page
+startup_message off
+
+# Set number of scrollback lines
+defscrollback 10000
+
+# Run a login shell in order to have /etc/profile.d scripts executed on start
+# See https://superuser.com/q/1068098/1036029
+shell -/bin/bash
