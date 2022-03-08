@@ -1,0 +1,28 @@
+%dpkg
+
+# Extract deb package
+dpkg-deb -xv <debfile> <target-path>
+
+$ debfile: ls *.deb
+$ target-path: echo ${debfile%.deb}
+
+# Find package that provides a file
+dpkg -S <file>
+
+
+%ipk
+
+# Extract ipk package
+tar zxpvf <file> --one-top-level=<target-path>
+
+$ file: ls *.ipk
+$ target-path: echo ${file%.ipk}
+
+
+%rpm
+
+# Extract rpm package
+rpm2cpio <file> | cpio -idmvD <target-path>
+
+$ file: ls *.rpm
+$ target-path: echo ${file%.rpm}
