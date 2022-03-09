@@ -1,4 +1,23 @@
-%dpkg
+% tar
+
+# Extract tar archive (gz/bz2/xz)
+tar -xf <file>
+
+# $ file: ls *.tar *.tar.gz *.tar.bz2 *.tar.xz
+
+# Create tar archive
+tar -cf <file.tar> <files>
+
+# Create tar archive with gz compression
+tar -czf <file.tar.gz> <files>
+
+# Create tar archive with bz2 compression
+tar -cjf <file.tar.bz2> <files>
+
+$ files: ls -a --- --multi --expand
+
+
+% dpkg
 
 # Extract deb package
 dpkg-deb -xv <debfile> <target-path>
@@ -10,7 +29,7 @@ $ target-path: echo ${debfile%.deb}
 dpkg -S <file>
 
 
-%ipk
+% ipk
 
 # Extract ipk package
 tar zxpvf <file> --one-top-level=<target-path>
@@ -19,7 +38,7 @@ $ file: ls *.ipk
 $ target-path: echo ${file%.ipk}
 
 
-%rpm
+% rpm
 
 # Extract rpm package
 rpm2cpio <file> | cpio -idmvD <target-path>

@@ -1,0 +1,7 @@
+% network
+
+# Set static IP address
+ifconfig <interface> <ip> netmask <netmask>
+
+$ interface: ip -o link show | awk -F': ' '{print $2}'
+$ netmask: echo "255.255.255.0|255.255.0.0|255.0.0.0" | tr '|' '\n'
