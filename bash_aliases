@@ -42,6 +42,7 @@ alias rcdn='rcdn -v'
 
 # Find broken links in dotfiles (if files have been moved or removed)
 alias rcbl='find ~/.??* ~/.[^.] -xtype l | while read file; do ll $file; done'
+alias rcbld='find ~/.??* ~/.[^.] -xtype l | while read file; do rm -v $file; done'
 
 # rcm variants for local dotfiles
 alias mkrcl='mkrc -d ~/.dotfiles-local'
