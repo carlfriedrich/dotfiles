@@ -1,0 +1,16 @@
+$include /etc/inputrc
+
+# Enable colors in tab completion
+set colored-stats on
+
+# Highlight already typed part of tab completion output
+set colored-completion-prefix on
+
+# Ignore case on tab completion
+set completion-ignore-case On
+
+# Trigger completion on single tab
+set show-all-if-ambiguous on
+
+# Append slash to symbolic links to directories in tab completion
+set mark-symlinked-directories On
