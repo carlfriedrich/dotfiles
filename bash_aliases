@@ -52,5 +52,8 @@ alias rcdnl='rcdn -d ~/.dotfiles-local'
 # History reload (to have history of other running shells)
 alias hr='history -c; history -r'
 
+# Dotfiles version
+alias dv='echo $(cd ~/.dotfiles && git describe --tags --dirty)'
+
 # Reload .bashrc
 alias sbrc='source ~/.bashrc'
