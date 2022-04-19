@@ -8,6 +8,10 @@
 	# Use diff-so-fancy for diffs
 	diffFilter = diff-so-fancy --patch
 
+[pull]
+	# Rebase instead of merge on pull
+	rebase = true
+
 [gc]
 	# Don't run garbage collector in background
 	autoDetach = false
