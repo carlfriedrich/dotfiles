@@ -1,0 +1,36 @@
+config_version = 1
+%terminals {
+	name = "xterm-256color"
+	key_timeout = -1000
+	color = true
+	attributes {
+		text = ( "fg white", "bg default" )
+		menubar = ( "fg black", "bg white" )
+		hotkey_highlight = ( "fg magenta" )
+		scrollbar = ( "fg black", "bg 8" )
+	}
+	highlight_attributes {
+		string = ( "fg 8" )
+		keyword = ( "fg blue", "bold" )
+		number = ( "fg red" )
+		variable = ( "fg magenta" )
+	}
+}
+%terminals {
+	name = "screen.xterm-256color"
+	key_timeout = 100
+	color = true
+	attributes {
+		text = ( "fg white", "bg default" )
+		menubar = ( "fg black", "bg white" )
+		hotkey_highlight = ( "fg magenta" )
+		scrollbar = ( "fg black", "bg 8" )
+	}
+	highlight_attributes {
+		string = ( "fg 8" )
+		keyword = ( "fg blue", "bold" )
+		number = ( "fg red" )
+		variable = ( "fg magenta" )
+	}
+}
+tabsize = 4
