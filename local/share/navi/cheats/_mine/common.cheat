@@ -1,0 +1,4 @@
+% rsync
+
+# Transfer folder [r]ecursively in [a]rchive (to preserve attributes) mode with [v]erbose and [h]uman-readable [P]rogress
+rsync -ravhP {{remote_host}}:{{path/to/remote_dir_without_trailing_slash}} {{path/to/local_dir}}
