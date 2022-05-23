@@ -40,7 +40,7 @@ function _exa()
 
         # Git column needs special treatment because it is optional and has
         # varying colours within the token
-        CGIT="([^ ]*[-NM][^ ]*[-NMI][^ ]*)?"
+        CGIT="([^ ]*[-NMDI][^ ]*[-NMDI][^ ]*)?"
 
         # Output order with tabs in between
         OUT="\1\t\3\t\4\t\2\t\5\t\6\t\7"
