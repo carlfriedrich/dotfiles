@@ -141,6 +141,11 @@ done
 # bat colors
 export BAT_THEME="base16"
 
+# Initialize zoxide
+export _ZO_FZF_OPTS="$FZF_DEFAULT_OPTS --no-sort --keep-right --height 8 \
+  --exit-0 --select-1 --bind=ctrl-z:ignore --bind 'shift-tab:up,tab:down'"
+eval "$(~/.local/bin/zoxide init --cmd cd bash)"
+
 # Allow local customizations in the ~/.bashrc_local file
 if [ -f ~/.bashrc_local ]; then
     source ~/.bashrc_local

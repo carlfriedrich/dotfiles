@@ -40,9 +40,6 @@ The following tools are contained in these dotfiles in binary or script form:
 - [**fzf**](https://github.com/junegunn/fzf)  
   A general-purpose command-line fuzzy finder
 
-- [**fz**](https://github.com/changyuheng/fz)  
-  `fzf` based tab completion for `z`
-
 - [**navi**](https://github.com/denisidoro/navi)  
   Interactive cheatsheet tool
 
@@ -58,8 +55,8 @@ The following tools are contained in these dotfiles in binary or script form:
 - [**vscode-updateenv**](https://superuser.com/a/1613931/1036029)  
   Make VS Code work in `screen` sessions
 
-- [**z**](https://github.com/rupa/z)  
-  Quickly `cd` into recently used directories
+- [**zoxide**](https://github.com/ajeetdsouza/zoxide)  
+  A `cd` replacement to quickly jump into recently used directories
 
 
 ## Contained configuration
