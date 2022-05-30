@@ -59,6 +59,9 @@ FORGIT_CHECKOUT_FILE_FZF_OPTS="
 	--preview-window='top:80%'
 "
 
+# Override aliases
+forgit_log="gl"
+
 # Include forgit plugin
 source ~/.local/share/forgit/forgit.plugin.zsh
 
