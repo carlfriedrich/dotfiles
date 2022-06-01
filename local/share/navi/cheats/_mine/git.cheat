@@ -1,0 +1,4 @@
+% git
+
+# Reset git submodule to committed state
+git submodule deinit -f . && git submodule update --init
