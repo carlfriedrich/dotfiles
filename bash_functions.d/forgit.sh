@@ -13,6 +13,9 @@ FORGIT_FZF_DEFAULT_OPTS="
 	--height=100%
 "
 
+# Do not display graph because it takes too long on large repos
+FORGIT_LOG_GRAPH_ENABLE=false
+
 # Customize log format: move decorators behind commit message
 FORGIT_LOG_FORMAT="%C(auto)%h %s%d"
 
