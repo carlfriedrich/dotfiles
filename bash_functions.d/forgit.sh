@@ -40,7 +40,7 @@ FORGIT_LOG_ENTER_COMMAND='echo {} | grep -Eo "[a-f0-9]+" | head -1 |
 	xargs -I % bash -ic "forgit::diff %^1 %"'
 
 FORGIT_LOG_FZF_OPTS="
-	--preview-window=top:20
+	--preview-window=top:40%
 	--preview='$FORGIT_LOG_PREVIEW_COMMAND'
 	--bind='enter:execute($FORGIT_LOG_ENTER_COMMAND)'
 "
