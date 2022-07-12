@@ -1,8 +1,8 @@
 #-------------------------------------------------------------------------------
 # forgit
 #-------------------------------------------------------------------------------
-# Include and customize forgit:
-# https://github.com/carlfriedrich/forgit
+# Customize forgit:
+# https://github.com/wxfr/forgit
 #-------------------------------------------------------------------------------
 FORGIT_FZF_DEFAULT_OPTS="
 	--reverse
@@ -62,13 +62,18 @@ FORGIT_CHECKOUT_FILE_FZF_OPTS="
 	--preview-window='top:80%'
 "
 
+FORGIT_CHERRY_PICK_FZF_OPTS="
+	--preview-window=top:40%
+	--preview='$FORGIT_LOG_PREVIEW_COMMAND'
+"
+
 # Override aliases
 forgit_log="gl"
 
 # Include forgit plugin
 source ~/.local/share/forgit/forgit.plugin.zsh
 
-# Override forgit:diff to have different enter command. This cannot be done by
+# Override forgit::diff to have different enter command. This cannot be done by
 # setting FORGIT_DIFF_FZF_OPTS, because the original arguments to forgit::diff
 # are needed for that, but they are not known when setting the variable.
 forgit::diff() {
@@ -101,4 +106,23 @@ forgit::diff() {
 	eval "git diff --name-status $commits -- ${files[*]} | sed -E 's/^([[:alnum:]]+)[[:space:]]+(.*)$/[\1]\t\2/'" |
 		sed 's/\t/  ->  /2' | expand -t 8 |
 		FZF_DEFAULT_OPTS="$opts" fzf
+}
+
+# Override forgit::cherry::pick to have colored git SHAs, dedicated fzf options
+# +/- information and reversed order (so that it is equal to git log).
+forgit::cherry::pick() {
+    local base target preview opts
+    base=$(git branch --show-current)
+    [[ -z $1 ]] && echo "Please specify target branch" && return 1
+    target="$1"
+    preview="echo {1} | xargs -I% git show --color=always % | $forgit_show_pager"
+    opts="
+        $FORGIT_FZF_DEFAULT_OPTS
+        --preview=\"$preview\"
+        -m -0 --tiebreak=index
+        $FORGIT_CHERRY_PICK_FZF_OPTS
+    "
+    git cherry "$base" "$target" --abbrev -v | sed -E "s/( [a-f0-9]+ )/\x1b[33m\1\x1b[0m/" | tac |
+        FZF_DEFAULT_OPTS="$opts" fzf | cut -d' ' -f2 | tac |
+        xargs -I% git cherry-pick %
 }
