@@ -2,3 +2,6 @@
 
 # Reset git submodule to committed state
 git submodule deinit -f . && git submodule update --init
+
+# Cherry pick commit with certain files only
+git show {{sha}} -- {{files}} | git apply --cached - && git commit -c $REV --no-edit
