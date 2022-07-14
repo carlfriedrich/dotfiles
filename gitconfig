@@ -18,6 +18,7 @@
 
 [alias]
 	a = !bash -ic 'forgit::add \"$@\"' x
+	bl = !bash -ic 'forgit::blame \"$@\"' x
 	c = commit --verbose
 	can = commit --amend --no-edit
 	cb = !bash -ic 'forgit::checkout::branch \"$@\"' x

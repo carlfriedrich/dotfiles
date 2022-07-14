@@ -86,10 +86,10 @@ forgit::diff() {
 		fi
 	}
 	repo="$(git rev-parse --show-toplevel)"
-	get_files="cd $repo && echo {} | sed 's/.*] *//' | sed 's/  ->  / /'"
-	preview_cmd="$get_files | xargs git diff --color=always $commits -- | $forgit_diff_pager"
+	get_files="cd '$repo' && echo {} | sed 's/.*] *//' | sed 's/  ->  / /'"
+	preview_cmd="$get_files | xargs -I% git diff --color=always $commits -- % | $forgit_diff_pager"
 	# Show additional context on enter compared to preview
-	enter_cmd="$get_files | xargs git diff --color=always -U10000 $commits -- | diff-so-fancy | sed -e '4d'"
+	enter_cmd="$get_files | xargs -I% git diff --color=always -U10000 $commits -- % | diff-so-fancy | sed -e '4d'"
 	# Show commits in prompt
 	opts="
 		$FORGIT_FZF_DEFAULT_OPTS
