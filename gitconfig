@@ -26,12 +26,18 @@
 	ct = !bash -ic 'forgit::checkout::tag \"$@\"' x
 	d = !bash -ic 'forgit::diff \"$@\"' x
 	fc = fetch changes
+	fu = !bash -ic 'forgit::fixup \"$@\"' x
+	i = !bash -ic 'forgit::ignore \"$@\"' x
 	l = !bash -ic 'forgit::log \"$@\"' x
 	ll = log --oneline --pretty=format:'%C(yellow)%h%C(reset)  %C(white)%s%C(reset)%C(auto)%d%C(reset) %C(dim white) %an, %ar%C(reset)'
 	# Bypass diff-so-fancy
 	patch = !git --no-pager diff
 	p = pull --prune
+	rb = !bash -ic 'forgit::rebase \"$@\"' x
+	rc = !bash -ic 'forgit::revert::commit \"$@\"' x
+	rh = !bash -ic 'forgit::reset::head \"$@\"' x
 	s = status
+	ss = !bash -ic 'forgit::stash::show \"$@\"' x
 
 [tig "color"]
 	title-blur = 0 7 bold
