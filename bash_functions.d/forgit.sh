@@ -26,12 +26,15 @@ FORGIT_LOG_PREVIEW_COMMAND='f() {
 		git show --no-patch --color=always $1
 		echo
 		git show --stat --format="" --color=always $1 |
+		sed "\$i\ " |
 		while read line; do
 			tput dim
+			# replace color code for red with dimmed red, otherwise files with
+			# additions and deletions (showing a "+++---" kind of stats) still
+			# print the "-" chars in normal red
 			echo " $line" | sed "s/\x1B\[m/\x1B\[2m/g"
 			tput sgr0
-		done |
-		tac | sed "1 a \ " | tac
+		done
 	)
 }; f {}'
 
