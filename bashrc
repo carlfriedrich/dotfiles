@@ -101,7 +101,12 @@ source ~/.local/share/fzf/key-bindings.bash
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 # Default options for less
-export LESS="--mouse --wheel-lines=4"
+# --mouse and --wheel-lines options have been added in v548:
+# https://www.greenwoodsoftware.com/less/news.548.html
+if [[ $(less --version | head -1 | cut -d' ' -f2) > 547 ]]
+then
+    export LESS="--mouse --wheel-lines=4"
+fi
 
 # Set default editor
 export EDITOR=tilde
