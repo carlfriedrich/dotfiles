@@ -35,6 +35,7 @@
 	patch = !git --no-pager diff
 	p = pull --prune
 	rb = !bash -ic 'forgit::rebase \"$@\"' x
+	rbc = rebase --continue
 	rc = !bash -ic 'forgit::revert::commit \"$@\"' x
 	rh = !bash -ic 'forgit::reset::head \"$@\"' x
 	s = status
