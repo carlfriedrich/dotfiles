@@ -14,6 +14,35 @@ use Cwd qw(abs_path);                                       # For realpath()
 use lib dirname(abs_path(File::Spec->catdir($0))) . "/lib"; # Add the local lib/ to @INC
 use DiffHighlight;
 
+my %section_color_config_names = (
+	'meta' => 'color.diff.meta',
+	'add_line' => 'color.diff.new',
+	'remove_line' => 'color.diff.old',
+	'fragment' => 'color.diff.frag',
+	'last_function' => 'color.diff.func',
+	'new_normal' => 'color.diff-highlight.newnormal',
+	'new_highlight' => 'color.diff-highlight.newhighlight',
+	'new_reset' => 'color.diff-highlight.newreset',
+	'old_normal' => 'color.diff-highlight.oldnormal',
+	'old_highlight' => 'color.diff-highlight.oldhighlight',
+	'old_reset' => 'color.diff-highlight.oldreset',
+);
+
+# Default/fallback color specs for each config name.
+my %git_ansi_color_default_specs = (
+	'color.diff.meta' => 'brightyellow',
+	'color.diff.frag' => 'brightmagenta bold',
+	'color.diff.func' => '146 bold',
+	'color.diff.new' => 'green',
+	'color.diff-highlight.newnormal' => '',
+	'color.diff-highlight.newhighlight' => 'reverse bold',
+	'color.diff-highlight.newreset' => 'no-reverse no-bold',
+	'color.diff.old' => 'red',
+	'color.diff-highlight.oldnormal' => '',
+	'color.diff-highlight.oldhighlight' => 'dim italic strike',
+	'color.diff-highlight.oldreset' => 'no-dim no-italic no-strike',
+);
+
 my $remove_file_add_header     = 1;
 my $remove_file_delete_header  = 1;
 my $clean_permission_changes   = 1;
@@ -416,8 +445,8 @@ sub mark_empty_line {
 	my $reset_color  = "\e\\[0?m";
 	my $reset_escape = "\e\[m";
 	my $invert_color = "\e\[7m";
-	my $add_color    = $DiffHighlight::NEW_HIGHLIGHT[1];
-	my $del_color    = $DiffHighlight::OLD_HIGHLIGHT[1];
+	my $add_color = get_config_color('new_highlight');
+	my $del_color = get_config_color('old_highlight');
 
 	# This captures lines that do not have any ANSI in them (raw vanilla diff)
 	if ($line eq "+\n") {
@@ -657,11 +686,11 @@ sub file_change_string {
 		return "modified: $file_1";
 	# If the first is /dev/null it's a new file
 	} elsif ($file_1 eq "/dev/null") {
-		my $add_color = $DiffHighlight::NEW_HIGHLIGHT[1];
+		my $add_color = get_config_color('new_highlight');
 		return "added: $add_color$file_2$reset_color";
 	# If the second is /dev/null it's a deletion
 	} elsif ($file_2 eq "/dev/null") {
-		my $del_color = $DiffHighlight::OLD_HIGHLIGHT[1];
+		my $del_color = get_config_color('old_highlight');
 		return "deleted: $del_color$file_1$reset_color";
 	# If the files aren't the same it's a rename
 	} elsif ($file_1 ne $file_2) {
@@ -712,7 +741,7 @@ sub argv {
 
 # Output the command line usage for d-s-f
 sub usage {
-	my $out = color("white_bold") . version() . color("reset") . "\n";
+	my $out = color("white bold") . version() . color("reset") . "\n";
 
 	$out .= "Usage:
 
@@ -738,16 +767,16 @@ sub get_default_colors {
 	$out    .= "# --------------------------------------------\n";
 	$out    .= 'git config --global color.ui true
 
-git config --global color.diff-highlight.oldNormal    "red bold"
-git config --global color.diff-highlight.oldHighlight "red bold 52"
-git config --global color.diff-highlight.newNormal    "green bold"
-git config --global color.diff-highlight.newHighlight "green bold 22"
+git config --global color.diff-highlight.oldNormal    "red"
+git config --global color.diff-highlight.oldHighlight "red 52 italic strike"
+git config --global color.diff-highlight.newNormal    "green"
+git config --global color.diff-highlight.newHighlight "green 22 bold"
 
 git config --global color.diff.meta       "yellow"
 git config --global color.diff.frag       "magenta bold"
 git config --global color.diff.commit     "yellow bold"
-git config --global color.diff.old        "red bold"
-git config --global color.diff.new        "green bold"
+git config --global color.diff.old        "red"
+git config --global color.diff.new        "green"
 git config --global color.diff.whitespace "red reverse"
 ';
 
@@ -829,164 +858,41 @@ sub set_defaults {
 	return 1;
 }
 
-# Borrowed from: https://www.perturb.org/display/1167_Perl_ANSI_colors.html
-# String format: '115', '165_bold', '10_on_140', 'reset', 'on_173', 'red', 'white_on_blue'
 sub color {
-	my $str = shift();
-
-	# No string sent in, so we just reset
-	if (!length($str) || $str eq 'reset') { return "\e[0m"; }
-
-	# Some predefined colors
-	my %color_map = qw(red 160 blue 21 green 34 yellow 226 orange 214 purple 93 white 15 black 0);
-	$str =~ s|([A-Za-z]+)|$color_map{$1} // $1|eg;
-
-	# Get foreground/background and any commands
-	my ($fc,$cmd) = $str =~ /(\d+)?_?(\w+)?/g;
-	my ($bc)      = $str =~ /on_?(\d+)/g;
-
-	# Some predefined commands
-	my %cmd_map = qw(bold 1 italic 3 underline 4 blink 5 inverse 7);
-	my $cmd_num = $cmd_map{$cmd // 0};
-
-	my $ret = '';
-	if ($cmd_num)     { $ret .= "\e[${cmd_num}m"; }
-	if (defined($fc)) { $ret .= "\e[38;5;${fc}m"; }
-	if (defined($bc)) { $ret .= "\e[48;5;${bc}m"; }
-
-	return $ret;
+	my $spec = shift();
+	return git_ansi_color('', $spec);
 }
 
 # Get colors used for various output sections (memoized)
-{
-	my $static_config;
-
-	sub get_config_color {
-		my $str = shift();
-
-		my $ret = "";
-		if ($static_config->{$str}) {
-			return $static_config->{$str};
-		}
-
-		#print color(15) . "Shelling out for color: '$str'\n" . color('reset');
-
-		if ($str eq "meta") {
-			# Default ANSI yellow
-			$ret = git_ansi_color(git_config('color.diff.meta')) || color(11);
-		} elsif ($str eq "reset") {
-			$ret = color("reset");
-		} elsif ($str eq "add_line") {
-			# Default ANSI green
-			$ret = git_ansi_color(git_config('color.diff.new')) || color("2_bold");
-		} elsif ($str eq "remove_line") {
-			# Default ANSI red
-			$ret = git_ansi_color(git_config('color.diff.old')) || color("1_bold");
-		} elsif ($str eq "fragment") {
-			$ret = git_ansi_color(git_config('color.diff.frag')) || color("13_bold");
-		} elsif ($str eq "last_function") {
-			$ret = git_ansi_color(git_config('color.diff.func')) || color("146_bold");
-		}
-
-		# Cache (memoize) the entry for later
-		$static_config->{$str} = $ret;
-
-		return $ret;
-	}
+sub get_config_color {
+	my $section = shift();
+	my $config_name = $section_color_config_names{$section};
+	return git_ansi_color($config_name);
 }
 
 # https://www.git-scm.com/book/en/v2/Customizing-Git-Git-Configuration#_colors_in_git
 sub git_ansi_color {
-	my $str   = shift();
-	my @parts = split(' ', $str);
+	my $config_name = lc(shift() // '');
+	my $color_spec = shift() // $git_ansi_color_default_specs{$config_name} // '';
 
-	if (!@parts) {
+	state $git_color_cache = {};
+	my $cache_key = $config_name || $color_spec;
+	if (!$cache_key) {
 		return '';
-	}
-	my $colors = {
-		'black'   => 0,
-		'red'     => 1,
-		'green'   => 2,
-		'yellow'  => 3,
-		'blue'    => 4,
-		'magenta' => 5,
-		'cyan'    => 6,
-		'white'   => 7,
-	};
-
-	my @ansi_part = ();
-
-	if (grep { /bold/ } @parts) {
-		push(@ansi_part, "1");
-		@parts = grep { !/bold/ } @parts; # Remove from array
+	} elsif (exists $git_color_cache->{$cache_key}) {
+		return $git_color_cache->{$cache_key};
 	}
 
-	if (grep { /reverse/ } @parts) {
-		push(@ansi_part, "7");
-		@parts = grep { !/reverse/ } @parts; # Remove from array
+	my @cmd = ('git', 'config', '--get-color', $config_name, $color_spec);
+	my $pid = open(my $fh, '-|', @cmd) or die "Cannot open: $!";
+	read($fh, my $ret, 256);
+	waitpid $pid, 0 or die "Failed to wait to get color $cache_key: $!";
+	my $status = $? >> 8;
+	if ($status != 0) {
+		die "Failed to get color $cache_key: $status";
 	}
 
-	my $fg  = $parts[0] // "";
-	my $bg  = $parts[1] // "";
-
-	#############################################
-
-	# It's an numeric value, so it's an 8 bit color
-	if (is_numeric($fg)) {
-		if ($fg < 8) {
-			push(@ansi_part, $fg + 30);
-		} elsif ($fg < 16) {
-			push(@ansi_part, $fg + 82);
-		} else {
-			push(@ansi_part, "38;5;$fg");
-		}
-	# It's a simple 16 color OG ansi
-	} elsif ($fg) {
-		my $bright    = $fg =~ s/bright//;
-		my $color_num = $colors->{$fg} + 30;
-
-		if ($bright) { $color_num += 60; } # Set bold
-
-		push(@ansi_part, $color_num);
-	}
-
-	#############################################
-
-	# It's an numeric value, so it's an 8 bit color
-	if (is_numeric($bg)) {
-		if ($bg < 8) {
-			push(@ansi_part, $bg + 40);
-		} elsif ($bg < 16) {
-			push(@ansi_part, $bg + 92);
-		} else {
-			push(@ansi_part, "48;5;$bg");
-		}
-	# It's a simple 16 color OG ansi
-	} elsif ($bg) {
-		my $bright    = $bg =~ s/bright//;
-		my $color_num = $colors->{$bg} + 40;
-
-		if ($bright) { $color_num += 60; } # Set bold
-
-		push(@ansi_part, $color_num);
-	}
-
-	#############################################
-
-	my $ansi_str = join(";", @ansi_part);
-	my $ret      = "\e[" . $ansi_str . "m";
-
-	return $ret;
-}
-
-sub is_numeric {
-	my $s = shift();
-
-	if ($s =~ /^\d+$/) {
-		return 1;
-	}
-
-	return 0;
+	return $git_color_cache->{$cache_key} = $ret;
 }
 
 sub starts_with_ansi {
@@ -1021,7 +927,8 @@ sub get_terminal_width {
 				$width--;
 			}
 		} else {
-			print color('orange') . "Warning: `tput cols` did not return numeric input" . color('reset') . "\n";
+			my $orange_color = color('214');
+			print $orange_color . "Warning: `tput cols` did not return numeric input" . $reset_color . "\n";
 			$width = 80;
 		}
 	}
@@ -1064,11 +971,13 @@ sub yes_no {
 
 # If there are colors set in the gitconfig use those, otherwise leave the defaults
 sub init_diff_highlight_colors {
-	$DiffHighlight::NEW_HIGHLIGHT[0] = git_ansi_color(git_config('color.diff-highlight.newnormal'))    || $DiffHighlight::NEW_HIGHLIGHT[0];
-	$DiffHighlight::NEW_HIGHLIGHT[1] = git_ansi_color(git_config('color.diff-highlight.newhighlight')) || $DiffHighlight::NEW_HIGHLIGHT[1];
+	$DiffHighlight::NEW_HIGHLIGHT[0] = get_config_color('new_normal') || undef;
+	$DiffHighlight::NEW_HIGHLIGHT[1] = get_config_color('new_highlight');
+	$DiffHighlight::NEW_HIGHLIGHT[2] = get_config_color('new_reset');
 
-	$DiffHighlight::OLD_HIGHLIGHT[0] = git_ansi_color(git_config('color.diff-highlight.oldnormal'))    || $DiffHighlight::OLD_HIGHLIGHT[0];
-	$DiffHighlight::OLD_HIGHLIGHT[1] = git_ansi_color(git_config('color.diff-highlight.oldhighlight')) || $DiffHighlight::OLD_HIGHLIGHT[1];
+	$DiffHighlight::OLD_HIGHLIGHT[0] = get_config_color('old_normal') || undef;
+	$DiffHighlight::OLD_HIGHLIGHT[1] = get_config_color('old_highlight');
+	$DiffHighlight::OLD_HIGHLIGHT[2] = get_config_color('old_reset');
 }
 
 sub debug_log {
@@ -1077,7 +986,8 @@ sub debug_log {
 
 	state $fh;
 	if (!$fh) {
-		printf("%sDebug log enabled:%s $file\n", color('orange'), color());
+		my $orange_color = color('214');
+		printf("%sDebug log enabled:%s $file\n", $orange_color, $reset_color);
 		open ($fh, ">", $file) or die("Cannot write to $file");
 	}
 
