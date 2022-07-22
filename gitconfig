@@ -45,18 +45,17 @@
 	title-focus = 0 7 bold
 	cursor = default 237 bold
 
-[diff-so-fancy]
-	markEmptyLines = false
-
 [color "diff-highlight"]
 	oldNormal = red
-	oldHighlight = red
+	oldHighlight = "red #553333"
 	newNormal = green
-	newHighlight = green
+	newHighlight = "green #2b503b"
 
 [color "diff"]
 	old = red
 	new = green
+	meta = yellow
+	frag = magenta bold
 
 [color "status"]
 	added = green
