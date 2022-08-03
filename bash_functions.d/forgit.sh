@@ -2,7 +2,7 @@
 # forgit
 #-------------------------------------------------------------------------------
 # Include and customize forgit:
-# https://github.com/carlfriedrich/forgit
+# https://github.com/wfxr/forgit
 #-------------------------------------------------------------------------------
 FORGIT_FZF_DEFAULT_OPTS="
 	--reverse
@@ -12,6 +12,22 @@ FORGIT_FZF_DEFAULT_OPTS="
 	--bind='q:abort'
 	--height=100%
 "
+
+# Custom preview: show commit message with dimmed diff stat below
+FORGIT_CUSTOM_PREVIEW='
+	git show --no-patch --color=always $1
+	echo
+	git show --stat --format="" --color=always $1 |
+	sed "\$i\ " |
+	while read line; do
+		tput dim
+		# replace color code for red with dimmed red, otherwise files with
+		# additions and deletions (showing a "+++---" kind of stats) still
+		# print the "-" chars in normal red
+		echo " $line" | sed "s/\x1B\[m/\x1B\[2m/g"
+		tput sgr0
+	done
+'
 
 # Show complete file in fullscreen diff
 FORGIT_FULLSCREEN_CONTEXT=10000
@@ -25,33 +41,45 @@ FORGIT_LOG_GRAPH_ENABLE=false
 # Customize log format: move decorators behind commit message
 FORGIT_LOG_FORMAT="%C(auto)%h %s%d"
 
-# Customize log preview: add dimmed diff stat below commit message
+# Use custom preview in log
 FORGIT_LOG_PREVIEW_COMMAND='f() {
 	set -- $(echo -- "$@" | grep -Eo "[a-f0-9]+")
-	[ $# -eq 0 ] || (
-		git show --no-patch --color=always $1
-		echo
-		git show --stat --format="" --color=always $1 |
-		sed "\$i\ " |
-		while read line; do
-			tput dim
-			# replace color code for red with dimmed red, otherwise files with
-			# additions and deletions (showing a "+++---" kind of stats) still
-			# print the "-" chars in normal red
-			echo " $line" | sed "s/\x1B\[m/\x1B\[2m/g"
-			tput sgr0
-		done
-	)
+	[ $# -eq 0 ] || ('$FORGIT_CUSTOM_PREVIEW')
 }; f {}'
 
 # Use forgit:diff on log enter
 FORGIT_LOG_ENTER_COMMAND='echo {} | grep -Eo "[a-f0-9]+" | head -1 |
-	xargs -I % bash -ic "forgit::diff %^1 %"'
+	xargs -I % bash -ic "forgit::diff %^!"'
 
 FORGIT_LOG_FZF_OPTS="
 	--preview-window=top:40%
 	--preview='$FORGIT_LOG_PREVIEW_COMMAND'
 	--bind='enter:execute($FORGIT_LOG_ENTER_COMMAND)'
+"
+
+# Use custom preview in stash
+FORGIT_STASH_PREVIEW_COMMAND='f() {
+	set -- $(echo -- "$@" | grep -Eo "stash@\{[0-9]*\}")
+	[ $# -eq 0 ] || ('$FORGIT_CUSTOM_PREVIEW')
+}; f {}'
+
+# Use forgit:diff on stash enter
+FORGIT_STASH_ENTER_COMMAND='echo {} | cut -d: -f1 |
+	xargs -I % bash -ic "forgit::diff %^!"'
+
+# Pop stash on alt-enter
+FORGIT_STASH_POP_COMMAND='echo {} | cut -d: -f1 | xargs -I % git stash pop %'
+
+# Drop stash on alt-backspace
+FORGIT_STASH_DROP_COMMAND='echo {} | cut -d: -f1 | xargs -I % git stash drop %'
+
+FORGIT_STASH_FZF_OPTS="
+	--preview-window=top:50%
+	--preview='$FORGIT_STASH_PREVIEW_COMMAND'
+	--bind='enter:execute($FORGIT_STASH_ENTER_COMMAND)'
+	--bind='alt-enter:execute($FORGIT_STASH_POP_COMMAND)+accept'
+	--bind='alt-bspace:execute($FORGIT_STASH_DROP_COMMAND)+reload(git stash list)'
+	--prompt='[ENTER] show   [ALT+ENTER] pop   [ALT+BACKSPACE] drop > '
 "
 
 FORGIT_DIFF_FZF_OPTS="
