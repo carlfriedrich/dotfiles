@@ -34,6 +34,7 @@
 	# Bypass diff-so-fancy
 	patch = !git --no-pager diff
 	p = pull --prune
+	pusht = !bash -ic 'git push --set-upstream origin $(git branch --show-current)'
 	rb = !bash -ic 'forgit::rebase \"$@\"' x
 	rbc = rebase --continue
 	rc = !bash -ic 'forgit::revert::commit \"$@\"' x
