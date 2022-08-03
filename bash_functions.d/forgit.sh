@@ -16,6 +16,9 @@ FORGIT_FZF_DEFAULT_OPTS="
 # Show complete file in fullscreen diff
 FORGIT_FULLSCREEN_CONTEXT=10000
 
+# Scroll file contents to top on fullscreen diff
+FORGIT_ENTER_PAGER="LESS='-Rc' less"
+
 # Do not display graph because it takes too long on large repos
 FORGIT_LOG_GRAPH_ENABLE=false
 
