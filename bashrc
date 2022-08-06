@@ -151,6 +151,11 @@ export _ZO_FZF_OPTS="$FZF_DEFAULT_OPTS --no-sort --keep-right --height 8 \
   --exit-0 --select-1 --bind=ctrl-z:ignore --bind 'shift-tab:up,tab:down'"
 eval "$(~/.local/bin/zoxide init --cmd cd bash)"
 
+# Initialize starship prompt if present and not already initialized
+if ~/.local/bin/starship --version >/dev/null 2>&1 && [[ -z "$STARSHIP_CMD_STATUS" ]]; then
+    eval "$(~/.local/bin/starship init bash)"
+fi
+
 # Allow local customizations in the ~/.bashrc_local file
 if [ -f ~/.bashrc_local ]; then
     source ~/.bashrc_local

@@ -52,6 +52,9 @@ The following tools are contained in these dotfiles in binary or script form:
 - [**sd**](https://github.com/chmln/sd)  
   Intuitive find & replace CLI, replacement for `sed`
 
+- [**starship**](https://github.com/starship/starship)  
+  Minimal, fast and infinitely customizable prompt
+
 - [**vscode-updateenv**](https://superuser.com/a/1613931/1036029)  
   Make VS Code work in `screen` sessions
 

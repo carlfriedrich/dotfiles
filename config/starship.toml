@@ -1,0 +1,124 @@
+# Custom format:
+# - Remove all modules just displaying a version number
+# - Move git_status right behind git_branch
+# - Move status before line_break
+# - Move jobs before line_break
+format = """
+$username\
+$hostname\
+$localip\
+$singularity\
+$kubernetes\
+$directory\
+$git_branch\
+$git_status\
+$git_commit\
+$git_state\
+$git_metrics\
+$docker_context\
+$package\
+$container\
+$python\
+$nix_shell\
+$conda\
+$spack\
+$aws\
+$gcloud\
+$openstack\
+$azure\
+$env_var\
+$custom\
+$cmd_duration\
+$jobs\
+$status\
+$line_break\
+$time\
+$shell\
+$character"""
+
+add_newline = true
+
+[username]
+style_user = "purple"
+format = "[$user]($style) "
+
+[hostname]
+style = "purple"
+ssh_symbol = "ﲾ "
+format = "[$ssh_symbol$hostname]($style): "
+
+[directory]
+style = "blue"
+truncate_to_repo = false
+truncation_symbol = "…/"
+truncation_length = 6
+home_symbol = " "
+
+[git_branch]
+style = "green"
+format = "[$symbol$branch(:$remote_branch)]($style)"
+symbol = "שׂ "
+
+# Show single changed indicator only
+[git_status]
+style = "bright-green"
+format = "[(*$conflicted$untracked$modified$staged$renamed$deleted)]($style) "
+conflicted = "​"
+untracked = "​"
+modified = "​"
+staged = "​"
+renamed = "​"
+deleted = "​"
+
+[git_commit]
+style = "yellow"
+tag_disabled = false
+format = "[$hash$tag]($style) "
+
+[git_state]
+style = "cyan"
+format = '[\($state( $progress_current/$progress_total)\)]($style) '
+
+[package]
+style = "yellow"
+format = "[$symbol$version]($style) "
+
+[python]
+style = "bright-black"
+symbol = " "
+version_format = "${raw}"
+format = '[${symbol}${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
+
+[cmd_duration]
+style = "yellow"
+disabled = true
+
+[jobs]
+style = "bright-black"
+symbol = " "
+
+[status]
+style = "red"
+symbol = "✗"
+format = "[$symbol $status]($style) "
+map_symbol = false
+disabled = false
+
+[line_break]
+disabled = false
+
+[shell]
+# Show shell indicator if not in bash
+disabled = false
+style = "yellow"
+format = "[$indicator]($style)"
+bash_indicator = ""
+fish_indicator = " "
+zsh_indicator = "鈴 "
+powershell_indicator = "_ "
+unknown_indicator = " "
+
+[character]
+# Always show same prompt (we have the status module for error display)
+success_symbol = "[❯](bright-black)"
+error_symbol = "[❯](bright-black)"
