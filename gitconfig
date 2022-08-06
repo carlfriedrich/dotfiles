@@ -25,6 +25,7 @@
 	cb = !bash -ic 'forgit::checkout::branch \"$@\"' x
 	co = !bash -ic 'forgit::checkout::commit \"$@\"' x
 	cp = !bash -ic 'forgit::cherry::pick \"$@\"' x
+	cpa = cherry-pick --abort
 	ct = !bash -ic 'forgit::checkout::tag \"$@\"' x
 	d = !bash -ic 'forgit::diff \"$@\"' x
 	fc = fetch changes
