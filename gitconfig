@@ -38,6 +38,7 @@
 	p = pull --prune
 	pusht = !bash -ic 'git push --set-upstream origin $(git branch --show-current)'
 	rb = !bash -ic 'forgit::rebase \"$@\"' x
+	rba = rebase --abort
 	rbc = rebase --continue
 	rc = !bash -ic 'forgit::revert::commit \"$@\"' x
 	rh = !bash -ic 'forgit::reset::head \"$@\"' x
