@@ -20,7 +20,7 @@
 	a = !bash -ic 'forgit::add \"$@\"' x
 	bl = !bash -ic 'forgit::blame \"$@\"' x
 	c = commit --verbose
-	ca = commit --amend
+	ca = commit --amend --verbose
 	can = commit --amend --no-edit
 	cb = !bash -ic 'forgit::checkout::branch \"$@\"' x
 	co = !bash -ic 'forgit::checkout::commit \"$@\"' x
@@ -28,6 +28,9 @@
 	cpa = cherry-pick --abort
 	ct = !bash -ic 'forgit::checkout::tag \"$@\"' x
 	d = !bash -ic 'forgit::diff \"$@\"' x
+	ds = !bash -ic 'forgit::diff --staged \"$@\"' x
+	f = fetch --tags --prune
+	fa = fetch --all --tags --prune
 	fc = fetch changes
 	fu = !bash -ic 'forgit::fixup \"$@\"' x
 	i = !bash -ic 'forgit::ignore \"$@\"' x
