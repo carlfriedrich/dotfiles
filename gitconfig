@@ -32,6 +32,7 @@
 	f = fetch --tags --prune
 	fa = fetch --all --tags --prune
 	fc = fetch changes
+	first-child = "!f() { git log  --reverse --ancestry-path --pretty=%H $1..${2:-HEAD} | head -1; }; f"
 	fu = !bash -ic 'forgit::fixup \"$@\"' x
 	i = !bash -ic 'forgit::ignore \"$@\"' x
 	l = !bash -ic 'forgit::log \"$@\"' x
