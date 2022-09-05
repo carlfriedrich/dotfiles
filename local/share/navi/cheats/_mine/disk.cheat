@@ -1,0 +1,10 @@
+% disk
+
+# Detect changed HW disk size (execute in root shell)
+echo 1 > /sys/class/block/{{sdX}}/device/rescan
+
+# Increase disk size (p, d, n, same start sector, don't remove signature, w)
+fdisk /dev/{{sdX}}
+
+# Increase file system size
+resize2fs /dev/{{sdX}}
