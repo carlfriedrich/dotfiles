@@ -22,7 +22,13 @@ HISTTIMEFORMAT='%F %T '
 HISTSIZE=1000000
 
 # Save each command to the history file right after running it
-export PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
+__history_hook ()
+{
+    local -r retval="$?"
+    history -a
+    return "${retval}"
+}
+export PROMPT_COMMAND="__history_hook;$PROMPT_COMMAND"
 
 # Append to the history file, don't overwrite it
 shopt -s histappend
