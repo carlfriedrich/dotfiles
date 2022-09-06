@@ -1,10 +1,13 @@
 % disk
 
-# Detect changed HW disk size (execute in root shell)
-echo 1 > /sys/class/block/{{sdX}}/device/rescan
+# Detect changed HW disk size
+sudo sh -c "echo 1 > /sys/class/block/{{sdX}}/device/rescan"
 
 # Increase disk size (p, d, n, same start sector, don't remove signature, w)
-fdisk /dev/{{sdX}}
+sudo fdisk /dev/{{sdX}}
 
 # Increase file system size
-resize2fs /dev/{{sdX}}
+sudo resize2fs /dev/{{sdX}}
+
+# Share WSL filesystem to other WSL instances
+sudo sh -c "echo \"/ /mnt/wsl/instances/$WSL_DISTRO_NAME none defaults,bind,X-mount.mkdir 0 0\" >> /etc/fstab"
