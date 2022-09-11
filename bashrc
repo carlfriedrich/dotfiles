@@ -78,6 +78,11 @@ if ! shopt -oq posix; then
   fi
 fi
 
+# Complete files with full path on git commands
+# Uses patched version of git completions from here:
+# https://unix.stackexchange.com/a/716164/317320
+GIT_COMPLETION_FULL_INDEX_PATHS=1
+
 #-------------------------------------------------------------------------------
 # Aliases
 #-------------------------------------------------------------------------------
