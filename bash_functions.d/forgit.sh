@@ -65,7 +65,7 @@ FORGIT_STASH_PREVIEW_COMMAND='f() {
 
 # Use forgit:diff on stash enter
 FORGIT_STASH_ENTER_COMMAND='echo {} | cut -d: -f1 |
-	xargs -I % bash -ic "forgit::diff %^!"'
+	xargs -I % bash -ic "forgit::diff %^1 %"'
 
 # Pop stash on alt-enter
 FORGIT_STASH_POP_COMMAND='echo {} | cut -d: -f1 | xargs -I % git stash pop %'
