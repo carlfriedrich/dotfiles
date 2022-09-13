@@ -105,5 +105,8 @@ forgit_log="gl"
 # Include forgit plugin
 source ~/.local/share/forgit/forgit.plugin.zsh
 
+# forgit completions
+source ~/.local/share/forgit/completions/forgit.bash
+
 # Add git-forgit to PATH
 path_prepend ${HOME}/.local/share/forgit/bin
