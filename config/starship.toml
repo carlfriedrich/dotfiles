@@ -61,7 +61,7 @@ symbol = "שׂ "
 
 # Show single changed indicator only
 [git_status]
-style = "bright-green"
+style = "green"
 format = "[(*$conflicted$untracked$modified$staged$renamed$deleted)]($style) "
 conflicted = "​"
 untracked = "​"
