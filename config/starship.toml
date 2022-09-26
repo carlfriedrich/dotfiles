@@ -62,13 +62,14 @@ symbol = "שׂ "
 # Show single changed indicator only
 [git_status]
 style = "green"
-format = "[(*$conflicted$untracked$modified$staged$renamed$deleted)]($style) "
+format = "[$stashed(*$conflicted$untracked$modified$staged$renamed$deleted)]($style) "
 conflicted = "​"
 untracked = "​"
 modified = "​"
 staged = "​"
 renamed = "​"
 deleted = "​"
+stashed = "ˢ"
 
 [git_commit]
 style = "yellow"
