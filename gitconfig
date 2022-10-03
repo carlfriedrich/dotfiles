@@ -17,38 +17,38 @@
 	autoDetach = false
 
 [alias]
-	a = !bash -ic 'forgit::add \"$@\"' x
-	bd = !bash -ic 'forgit::branch::delete \"$@\"' x
-	bl = !bash -ic 'forgit::blame \"$@\"' x
+	a = forgit add
+	bd = forgit branch_delete
+	bl = forgit blame
 	c = commit --verbose
 	ca = commit --amend --verbose
 	can = commit --amend --no-edit
-	cb = !bash -ic 'forgit::checkout::branch \"$@\"' x
-	co = !bash -ic 'forgit::checkout::commit \"$@\"' x
-	cp = !bash -ic 'forgit::cherry::pick::from::branch \"$@\"' x
+	cb = forgit checkout_branch
+	co = forgit checkout_commit
+	cp = forgit cherry_pick_from_branch
 	cpa = cherry-pick --abort
-	ct = !bash -ic 'forgit::checkout::tag \"$@\"' x
-	d = !bash -ic 'forgit::diff \"$@\"' x
-	ds = !bash -ic 'forgit::diff --staged \"$@\"' x
+	ct = forgit checkout_tag
+	d = forgit diff
+	ds = forgit diff --staged
 	f = fetch --tags --prune
 	fa = fetch --all --tags --prune
 	fc = fetch changes
 	first-child = "!f() { git log  --reverse --ancestry-path --pretty=%H $1..${2:-HEAD} | head -1; }; f"
-	fu = !bash -ic 'forgit::fixup \"$@\"' x
-	i = !bash -ic 'forgit::ignore \"$@\"' x
-	l = !bash -ic 'forgit::log \"$@\"' x
+	fu = forgit fixup
+	i = forgit ignore
+	l = forgit log
 	ll = log --oneline --pretty=format:'%C(yellow)%h%C(reset)  %C(white)%s%C(reset)%C(auto)%d%C(reset) %C(dim white) %an, %ar%C(reset)'
 	# Bypass diff-so-fancy
 	patch = !git --no-pager diff
 	p = pull --prune
 	pusht = !bash -ic 'git push --set-upstream origin $(git branch --show-current)'
-	rb = !bash -ic 'forgit::rebase \"$@\"' x
+	rb = forgit rebase
 	rba = rebase --abort
 	rbc = rebase --continue
-	rc = !bash -ic 'forgit::revert::commit \"$@\"' x
-	rh = !bash -ic 'forgit::reset::head \"$@\"' x
+	rc = forgit revert_commit
+	rh = forgit reset_head
 	s = status
-	ss = !bash -ic 'forgit::stash::show \"$@\"' x
+	ss = forgit stash_show
 
 [tig "color"]
 	title-blur = 0 7 bold

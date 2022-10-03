@@ -4,7 +4,7 @@
 # Include and customize forgit:
 # https://github.com/wfxr/forgit
 #-------------------------------------------------------------------------------
-FORGIT_FZF_DEFAULT_OPTS="
+export FORGIT_FZF_DEFAULT_OPTS="
 	--reverse
 	--preview-window='top:50%'
 	--bind=shift-down:preview-down
@@ -14,7 +14,7 @@ FORGIT_FZF_DEFAULT_OPTS="
 "
 
 # Custom preview: show commit message with dimmed diff stat below
-FORGIT_CUSTOM_PREVIEW='
+export FORGIT_CUSTOM_PREVIEW='
 	git show --no-patch --color=always $1
 	echo
 	git show --stat --format="" --color=always $1 |
@@ -30,50 +30,50 @@ FORGIT_CUSTOM_PREVIEW='
 '
 
 # Show complete file in fullscreen diff
-FORGIT_FULLSCREEN_CONTEXT=10000
+export FORGIT_FULLSCREEN_CONTEXT=10000
 
 # Scroll file contents to top on fullscreen diff
-FORGIT_ENTER_PAGER="LESS='-Rc' less"
+export FORGIT_ENTER_PAGER="LESS='-Rc' less"
 
 # Do not display graph because it takes too long on large repos
-FORGIT_LOG_GRAPH_ENABLE=false
+export FORGIT_LOG_GRAPH_ENABLE=false
 
 # Customize log format: move decorators behind commit message
-FORGIT_LOG_FORMAT="%C(auto)%h %s%d"
+export FORGIT_LOG_FORMAT="%C(auto)%h %s%d"
 
 # Use custom preview in log
-FORGIT_LOG_PREVIEW_COMMAND='f() {
+export FORGIT_LOG_PREVIEW_COMMAND='f() {
 	set -- $(echo -- "$@" | grep -Eo "[a-f0-9]+")
 	[ $# -eq 0 ] || ('$FORGIT_CUSTOM_PREVIEW')
 }; f {}'
 
 # Use forgit:diff on log enter
-FORGIT_LOG_ENTER_COMMAND='echo {} | grep -Eo "[a-f0-9]+" | head -1 |
+export FORGIT_LOG_ENTER_COMMAND='echo {} | grep -Eo "[a-f0-9]+" | head -1 |
 	xargs -I % bash -ic "forgit::diff %^!"'
 
-FORGIT_LOG_FZF_OPTS="
+export FORGIT_LOG_FZF_OPTS="
 	--preview-window=top:40%
 	--preview='$FORGIT_LOG_PREVIEW_COMMAND'
 	--bind='enter:execute($FORGIT_LOG_ENTER_COMMAND)'
 "
 
 # Use custom preview in stash
-FORGIT_STASH_PREVIEW_COMMAND='f() {
+export FORGIT_STASH_PREVIEW_COMMAND='f() {
 	set -- $(echo -- "$@" | grep -Eo "stash@\{[0-9]*\}")
 	[ $# -eq 0 ] || ('$FORGIT_CUSTOM_PREVIEW')
 }; f {}'
 
 # Use forgit:diff on stash enter
-FORGIT_STASH_ENTER_COMMAND='echo {} | cut -d: -f1 |
+export FORGIT_STASH_ENTER_COMMAND='echo {} | cut -d: -f1 |
 	xargs -I % bash -ic "forgit::diff %^1 %"'
 
 # Pop stash on alt-enter
-FORGIT_STASH_POP_COMMAND='echo {} | cut -d: -f1 | xargs -I % git stash pop %'
+export FORGIT_STASH_POP_COMMAND='echo {} | cut -d: -f1 | xargs -I % git stash pop %'
 
 # Drop stash on alt-backspace
-FORGIT_STASH_DROP_COMMAND='echo {} | cut -d: -f1 | xargs -I % git stash drop %'
+export FORGIT_STASH_DROP_COMMAND='echo {} | cut -d: -f1 | xargs -I % git stash drop %'
 
-FORGIT_STASH_FZF_OPTS="
+export FORGIT_STASH_FZF_OPTS="
 	--preview-window=top:50%
 	--preview='$FORGIT_STASH_PREVIEW_COMMAND'
 	--bind='enter:execute($FORGIT_STASH_ENTER_COMMAND)'
@@ -82,20 +82,20 @@ FORGIT_STASH_FZF_OPTS="
 	--prompt='[ENTER] show   [ALT+ENTER] pop   [ALT+BACKSPACE] drop > '
 "
 
-FORGIT_DIFF_FZF_OPTS="
+export FORGIT_DIFF_FZF_OPTS="
 	--exit-0
 	--preview-window='top:80%'
 "
 
-FORGIT_ADD_FZF_OPTS="
+export FORGIT_ADD_FZF_OPTS="
 	--preview-window='top:80%'
 "
 
-FORGIT_RESET_HEAD_FZF_OPTS="
+export FORGIT_RESET_HEAD_FZF_OPTS="
 	--preview-window='top:80%'
 "
 
-FORGIT_CHECKOUT_FILE_FZF_OPTS="
+export FORGIT_CHECKOUT_FILE_FZF_OPTS="
 	--preview-window='top:80%'
 "
 
@@ -104,3 +104,6 @@ forgit_log="gl"
 
 # Include forgit plugin
 source ~/.local/share/forgit/forgit.plugin.zsh
+
+# Add git-forgit to PATH
+path_prepend ${HOME}/.local/share/forgit/bin
