@@ -1,0 +1,10 @@
+% patch
+
+# Create a patch
+diff -u {{oldfile}} {{newfile}} > {{patchfile}}
+
+# Apply a patch
+patch < {{patchfile}}
+
+# Reverse a patch
+patch -R < {{patchfile}}
