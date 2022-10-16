@@ -1,0 +1,6 @@
+% shell
+
+# Start new shell with clean environment
+env -i HOME="$HOME" TERM="$TERM" <shell>
+
+$ shell: echo "bash zsh fish csh" | tr ' ' '\n'
