@@ -39,7 +39,5 @@ zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 path=("$HOME/.local/bin" $path)
 export PATH
 
-source ~/packages/forgit/forgit.plugin.zsh
-
 # Initialize starship prompt
 eval "$(starship init zsh)"
