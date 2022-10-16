@@ -41,3 +41,9 @@ export PATH
 
 # Initialize starship prompt
 eval "$(starship init zsh)"
+
+source ~/.zplug/init.zsh
+
+zplug "carlfriedrich/forgit", at:move-implementation-to-standalone-forgit
+
+zplug load --verbose
