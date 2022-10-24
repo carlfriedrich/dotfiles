@@ -24,6 +24,7 @@
 	ca = commit --amend --verbose
 	can = commit --amend --no-edit
 	cb = forgit checkout_branch
+	cf = forgit checkout_file
 	co = forgit checkout_commit
 	cp = forgit cherry_pick_from_branch
 	cpa = cherry-pick --abort
