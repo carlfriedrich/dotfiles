@@ -47,14 +47,9 @@ export FORGIT_LOG_PREVIEW_COMMAND='f() {
 	[ $# -eq 0 ] || ('$FORGIT_CUSTOM_PREVIEW')
 }; f {}'
 
-# Use forgit:diff on log enter
-export FORGIT_LOG_ENTER_COMMAND='echo {} | grep -Eo "[a-f0-9]+" | head -1 |
-	xargs -I % bash -ic "forgit::diff %^!"'
-
 export FORGIT_LOG_FZF_OPTS="
 	--preview-window=top:40%
 	--preview='$FORGIT_LOG_PREVIEW_COMMAND'
-	--bind='enter:execute($FORGIT_LOG_ENTER_COMMAND)'
 "
 
 # Use custom preview in stash
@@ -63,9 +58,9 @@ export FORGIT_STASH_PREVIEW_COMMAND='f() {
 	[ $# -eq 0 ] || ('$FORGIT_CUSTOM_PREVIEW')
 }; f {}'
 
-# Use forgit:diff on stash enter
+# Use forgit diff on stash enter
 export FORGIT_STASH_ENTER_COMMAND='echo {} | cut -d: -f1 |
-	xargs -I % bash -ic "forgit::diff %^1 %"'
+	xargs -I % bash -ic "git forgit diff %^1 %"'
 
 # Pop stash on alt-enter
 export FORGIT_STASH_POP_COMMAND='echo {} | cut -d: -f1 | xargs -I % git stash pop %'
@@ -98,12 +93,3 @@ export FORGIT_RESET_HEAD_FZF_OPTS="
 export FORGIT_CHECKOUT_FILE_FZF_OPTS="
 	--preview-window='top:80%'
 "
-
-# Override aliases
-forgit_log="gl"
-
-# Include forgit plugin
-source ~/.local/share/forgit/forgit.plugin.zsh
-
-# Add git-forgit to PATH
-path_prepend ${HOME}/.local/share/forgit/bin
