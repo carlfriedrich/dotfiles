@@ -6,6 +6,7 @@
 #-------------------------------------------------------------------------------
 export FORGIT_FZF_DEFAULT_OPTS="
 	--reverse
+	--exact
 	--preview-window='top:50%'
 	--bind=shift-down:preview-down
 	--bind=shift-up:preview-up
