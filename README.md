@@ -49,6 +49,9 @@ The following tools are contained in these dotfiles in binary or script form:
 - [**rcm**](https://github.com/thoughtbot/rcm)  
   Tool for dotfiles management
 
+- [**ripgrep**](https://github.com/BurntSushi/ripgrep)  
+  Fast and user-friendly `grep` alternative
+
 - [**sd**](https://github.com/chmln/sd)  
   Intuitive find & replace CLI, replacement for `sed`
 

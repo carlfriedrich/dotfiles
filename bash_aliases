@@ -4,6 +4,9 @@ alias grep='grep --color'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 
+# Do not group ripgrep output by files
+alias rg='rg --no-heading'
+
 # Interpret ANSI color codes in less
 alias less='less -R'
 
