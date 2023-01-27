@@ -102,12 +102,6 @@ if [ -d ~/.bash_functions.d ]; then
 fi
 
 #-------------------------------------------------------------------------------
-# Key bindings
-#-------------------------------------------------------------------------------
-# fzf
-source ~/.local/share/fzf/key-bindings.bash
-
-#-------------------------------------------------------------------------------
 # Customization
 #-------------------------------------------------------------------------------
 # Make less more friendly for non-text input files, see lesspipe(1)
@@ -128,7 +122,7 @@ export EDITOR=tilde
 path_prepend ${HOME}/.cargo/bin
 
 # Default options for fzf
-export FZF_DEFAULT_OPTS="--reverse --height=25% \
+export FZF_DEFAULT_OPTS="--reverse --height=25% --no-separator --scrollbar ▒ \
 --color=16,fg+:bright-white,hl:magenta,hl+:bright-magenta,info:yellow,\
 spinner:green,pointer:red,marker:red,border:grey,bg+:236"
 

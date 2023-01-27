@@ -1,3 +1,0 @@
-# This file is loaded via /etc/profile.d/bash_completion.sh
-
-source ~/.local/share/fzf/completion.bash
