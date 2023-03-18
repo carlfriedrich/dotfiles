@@ -93,3 +93,8 @@ export FORGIT_RESET_HEAD_FZF_OPTS="
 export FORGIT_CHECKOUT_FILE_FZF_OPTS="
 	--preview-window='top:80%'
 "
+
+# Use Windows clipboard in WSL
+if which clip.exe > /dev/null; then
+	export FORGIT_COPY_CMD="clip.exe"
+fi
