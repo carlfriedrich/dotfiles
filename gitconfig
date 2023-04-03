@@ -21,8 +21,8 @@
 	bd = forgit branch_delete
 	bl = forgit blame
 	c = commit --verbose
-	ca = commit --amend --verbose
-	can = commit --amend --no-edit
+	ca = commit --amend --date=now --verbose
+	can = commit --amend --date=now --no-edit
 	cb = forgit checkout_branch
 	cf = forgit checkout_file
 	co = forgit checkout_commit
