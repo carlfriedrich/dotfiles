@@ -122,9 +122,15 @@ export EDITOR=tilde
 path_prepend ${HOME}/.cargo/bin
 
 # Default options for fzf
-export FZF_DEFAULT_OPTS="--reverse --height=25% --no-separator --scrollbar ▒ \
---color=16,fg+:bright-white,hl:magenta,hl+:bright-magenta,info:yellow,\
-spinner:green,pointer:red,marker:red,border:grey,bg+:236"
+export FZF_DEFAULT_OPTS="
+  --reverse
+  --height=25%
+  --no-separator
+  --scrollbar ▒
+  --bind 'ctrl-t:track+clear-query'
+  --color=16,fg+:bright-white,hl:magenta,hl+:bright-magenta,info:yellow,\
+spinner:green,pointer:red,marker:red,border:grey,bg+:236
+"
 
 # navi options
 export NAVI_FZF_OVERRIDES='--tiebreak=begin,index --with-nth 3,2'
