@@ -127,7 +127,8 @@ export FZF_DEFAULT_OPTS="
   --height=25%
   --no-separator
   --scrollbar ▒
-  --bind 'ctrl-t:track+clear-query'
+  --track
+  --bind 'ctrl-t:toggle-track'
   --color=16,fg+:bright-white,hl:magenta,hl+:bright-magenta,info:yellow,\
 spinner:green,pointer:red,marker:red,border:grey,bg+:236
 "
