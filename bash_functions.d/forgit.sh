@@ -12,6 +12,7 @@ export FORGIT_FZF_DEFAULT_OPTS="
 	--bind=shift-up:preview-up
 	--bind='q:abort'
 	--height=100%
+	--info=inline-right
 "
 
 # Custom preview: show commit message with dimmed diff stat below
