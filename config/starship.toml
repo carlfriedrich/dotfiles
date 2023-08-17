@@ -84,6 +84,9 @@ format = '[\($state( $progress_current/$progress_total)\)]($style) '
 style = "yellow"
 format = "[$symbol$version]($style) "
 
+[container]
+disabled = true
+
 [python]
 style = "bright-black"
 symbol = " "
