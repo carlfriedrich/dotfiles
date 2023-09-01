@@ -50,9 +50,24 @@ export FORGIT_LOG_PREVIEW_COMMAND='f() {
 	[ $# -eq 0 ] || ('$FORGIT_CUSTOM_PREVIEW')
 }; f {}'
 
+# Checkout on alt-enter
+export FORGIT_LOG_CHECKOUT_COMMAND='echo {} | cut -d" " -f1 | xargs -I % git checkout %'
+
+# Revert on alt-backspace
+export FORGIT_LOG_REVERT_COMMAND='echo {} | cut -d" " -f1 | xargs -I % git revert %'
+
+# Rebase on ctrl-r
+export FORGIT_LOG_REBASE_COMMAND='echo {} | cut -d" " -f1 | xargs -I % git rebase -i %'
+
 export FORGIT_LOG_FZF_OPTS="
 	--preview-window=top:40%
 	--preview='$FORGIT_LOG_PREVIEW_COMMAND'
+	--bind='alt-enter:execute($FORGIT_LOG_CHECKOUT_COMMAND)+cancel'
+	--bind='alt-bspace:execute($FORGIT_LOG_REVERT_COMMAND)+cancel'
+	--bind='ctrl-r:execute($FORGIT_LOG_REBASE_COMMAND)+cancel'
+	--border=bottom
+	--border-label=' [ENTER] show - [ALT+ENTER] checkout - [ALT+BACKSPACE] revert - [CTRL+R] rebase '
+	--color=label:gray
 "
 
 # Use custom preview in stash
@@ -84,6 +99,7 @@ export FORGIT_STASH_FZF_OPTS="
 export FORGIT_DIFF_FZF_OPTS="
 	--exit-0
 	--preview-window='top:80%'
+	--border=none
 "
 
 export FORGIT_ADD_FZF_OPTS="
