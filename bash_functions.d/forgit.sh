@@ -118,3 +118,8 @@ export FORGIT_CHECKOUT_FILE_FZF_OPTS="
 if which clip.exe > /dev/null; then
 	export FORGIT_COPY_CMD="clip.exe"
 fi
+
+# Bind forgit log to Ctrl+G
+# We do this in a two-step way in order to redraw the prompt afterwards
+bind -x '"\C-x\C-s":"git forgit log"'
+bind '"\C-g":"\C-x\C-s\n"'

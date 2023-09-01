@@ -100,6 +100,9 @@ These dotfiles come with a set of preconfigured bash keybindings:
   using the entered search string. Press `Enter` to open the file in your
   default editor. Press `Alt+Enter` to open it without closing the `fzf` window.
 
+- **Interactive git log** <kbd>**Ctrl**</kbd>+<kbd>**G**</kbd>  
+  Runs `git forgit` for interactive git history.
+
 - **Interactive cheat sheet** <kbd>**Ctrl**</kbd>+<kbd>**Space**</kbd>  
   Opens `navi` for interactive selection of configured cheat sheets.
 
