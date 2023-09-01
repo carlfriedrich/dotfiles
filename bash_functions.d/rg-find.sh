@@ -14,13 +14,13 @@ __rg_find() {
       fzf --ansi \
           --disabled --query "$INITIAL_QUERY" \
           --bind "change:reload:sleep 0.1; $RG_PREFIX {q} || true" \
-          --bind "alt-enter:execute-silent(code -g '{1}:{2}:{3}')" \
+          --bind "alt-enter:execute-silent($EDITOR -g '{1}:{2}:{3}')" \
           --bind "tab:toggle-preview" \
           --delimiter : \
           --preview 'bat --color=always {1} --style=numbers --highlight-line {2}' \
           --preview-window 'up,50%,+{2}/2:hidden' \
     )
-    [ -n "${selected[0]}" ] && code -g "${selected[0]}:${selected[1]}"
+    [ -n "${selected[0]}" ] && $EDITOR -g "${selected[0]}:${selected[1]}"
 }
 
 # Bind to Ctrl+F
