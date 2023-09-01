@@ -1,6 +1,7 @@
 # Custom format:
 # - Remove all modules just displaying a version number
 # - Move git_status right behind git_branch
+# - Move kubernetes after git
 # - Move status before line_break
 # - Move jobs before line_break
 format = """
@@ -8,13 +9,13 @@ $username\
 $hostname\
 $localip\
 $singularity\
-$kubernetes\
 $directory\
 $git_branch\
 $git_status\
 $git_commit\
 $git_state\
 $git_metrics\
+$kubernetes\
 $docker_context\
 $package\
 $container\
@@ -79,6 +80,11 @@ format = "[$hash$tag]($style) "
 [git_state]
 style = "cyan"
 format = '[\($state( $progress_current/$progress_total)\)]($style) '
+
+[kubernetes]
+disabled = false
+style = "bright-black"
+format = '[$symbol$context( \($namespace\))]($style) '
 
 [package]
 style = "yellow"
