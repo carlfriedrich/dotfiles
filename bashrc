@@ -116,7 +116,11 @@ then
 fi
 
 # Set default editor
-export EDITOR=tilde
+if which code >/dev/null; then
+    export EDITOR=code
+else
+    export EDITOR=tilde
+fi
 
 # Add cargo packages to PATH
 path_prepend ${HOME}/.cargo/bin
