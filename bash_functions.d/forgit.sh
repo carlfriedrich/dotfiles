@@ -76,7 +76,9 @@ export FORGIT_STASH_FZF_OPTS="
 	--bind='enter:execute($FORGIT_STASH_ENTER_COMMAND)'
 	--bind='alt-enter:execute($FORGIT_STASH_POP_COMMAND)+accept'
 	--bind='alt-bspace:execute($FORGIT_STASH_DROP_COMMAND)+reload(git stash list)'
-	--prompt='[ENTER] show   [ALT+ENTER] pop   [ALT+BACKSPACE] drop > '
+	--border=bottom
+	--border-label=' [ENTER] show - [ALT+ENTER] pop - [ALT+BACKSPACE] drop '
+	--color=label:gray
 "
 
 export FORGIT_DIFF_FZF_OPTS="
