@@ -81,6 +81,29 @@ Here is a list of tools that these dotfiles contain configuration for:
 - [**tilde**](https://github.com/gphalkes/tilde)
 
 
+## Keybindings
+
+These dotfiles come with a set of preconfigured bash keybindings:
+
+- **Interactive History search** <kbd>**Ctrl**</kbd>+<kbd>**R**</kbd>  
+  Opens an `fzf` window containing the bash history to interactively search for
+  previously executed commands. Press `Enter` to select a command and insert it
+  into your promt.
+
+- **Interactive file search** <kbd>**Ctrl**</kbd>+<kbd>**T**</kbd>  
+  Opens an `fzf` window containing all files within the current directory and
+  its subdirectories. Press `Enter` to select a file and insert it into your
+  prompt.
+
+- **Interactive find in files** <kbd>**Ctrl**</kbd>+<kbd>**F**</kbd>  
+  Opens an `fzf` window executing a `ripgrep` search in the current directory
+  using the entered search string. Press `Enter` to open the file in your
+  default editor. Press `Alt+Enter` to open it without closing the `fzf` window.
+
+- **Interactive cheat sheet** <kbd>**Ctrl**</kbd>+<kbd>**Space**</kbd>  
+  Opens `navi` for interactive selection of configured cheat sheets.
+
+
 ## Dotfile management
 
 ### Standard rcm commands
