@@ -16,12 +16,15 @@
 	# Don't run garbage collector in background
 	autoDetach = false
 
+[commit]
+	verbose = true
+
 [alias]
 	a = forgit add
 	bd = forgit branch_delete
 	bl = forgit blame
-	c = commit --verbose
-	ca = commit --amend --date=now --verbose
+	c = commit
+	ca = commit --amend --date=now
 	can = commit --amend --date=now --no-edit
 	cb = forgit checkout_branch
 	cf = forgit checkout_file
