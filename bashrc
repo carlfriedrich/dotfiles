@@ -132,6 +132,8 @@ export FZF_DEFAULT_OPTS="
   --no-separator
   --scrollbar ▒
   --bind 'ctrl-t:toggle-track'
+  --bind 'preview-scroll-up:preview-up+preview-up+preview-up+preview-up'
+  --bind 'preview-scroll-down:preview-down+preview-down+preview-down+preview-down'
   --color=16,fg+:bright-white,hl:magenta,hl+:bright-magenta,info:yellow,\
 spinner:green,pointer:red,marker:red,border:grey,bg+:236
 "
