@@ -14,3 +14,11 @@ set show-all-if-ambiguous on
 
 # Append slash to symbolic links to directories in tab completion
 set mark-symlinked-directories On
+
+# Enable fzf based history search using ctrl+r in all applications
+$include function rl_custom_isearch /home/tim/.local/lib/librl_custom_isearch.so
+"\C-r": rl_custom_isearch
+"\C-s": rl_custom_isearch
+
+$include function hello_world /home/tim/projects/rl_custom_function/hello_world.so
+"\C-g": hello_world
