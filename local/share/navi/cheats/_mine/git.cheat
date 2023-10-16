@@ -12,6 +12,9 @@ git show {{sha}} -- {{files}} | git apply --cached - && git commit -c $REV --no-
 # Set committer date, name and email to the ones of the author for all commits in current branch
 FILTER_BRANCH_SQUELCH_WARNING=1 git filter-branch --env-filter 'export GIT_COMMITTER_DATE="$GIT_AUTHOR_DATE"; export GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"; export GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"' -f
 
+# Reset author name and email while keeping original commit date
+git -c rebase.instructionFormat='%s%nexec GIT_COMMITTER_DATE="%cD" git commit --amend --no-edit --reset-author --date="%cD"' rebase -i {{commit}}
+
 # Checkout GitHub pull request
 git fetch <remote> pull/<id>/head:<local-branch-name>
 
