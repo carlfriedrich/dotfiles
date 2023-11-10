@@ -14,3 +14,6 @@ set show-all-if-ambiguous on
 
 # Append slash to symbolic links to directories in tab completion
 set mark-symlinked-directories On
+
+# Bind ctrl+h to erase previous word in command line
+"\C-h": backward-kill-word
