@@ -91,6 +91,9 @@ GIT_COMPLETION_FULL_INDEX_PATHS=1
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
+# Enable automatic bash completion for aliases
+source ~/.local/share/complete_alias/complete_alias
+complete -F _complete_alias "${!BASH_ALIASES[@]}"
 
 #-------------------------------------------------------------------------------
 # Functions
