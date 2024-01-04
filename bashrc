@@ -138,7 +138,7 @@ export FZF_DEFAULT_OPTS="
   --bind 'preview-scroll-up:preview-up+preview-up+preview-up+preview-up'
   --bind 'preview-scroll-down:preview-down+preview-down+preview-down+preview-down'
   --color=16,fg+:bright-white,hl:magenta,hl+:bright-magenta,info:yellow,\
-spinner:green,pointer:red,marker:red,border:grey,bg+:236
+spinner:green,pointer:red,marker:red,border:grey,bg+:#303336
 "
 
 # navi options
