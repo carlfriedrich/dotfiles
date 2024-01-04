@@ -104,6 +104,9 @@ symbol = " "
 version_format = "${raw}"
 format = '[${symbol}${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
 
+[gcloud]
+disabled = true
+
 [cmd_duration]
 style = "yellow"
 disabled = true
