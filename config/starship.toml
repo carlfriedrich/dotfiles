@@ -86,6 +86,11 @@ disabled = false
 style = "bright-black"
 format = '[$symbol$context( \($namespace\))]($style) '
 
+[[kubernetes.contexts]]
+# Remove GKE specific information about region/zone and display cluster name only
+context_pattern = "gke_.*_(?P<cluster>[\\w-]+)"
+context_alias = "$cluster"
+
 [package]
 style = "yellow"
 format = "[$symbol$version]($style) "
