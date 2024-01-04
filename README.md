@@ -73,6 +73,7 @@ Here is a list of tools that these dotfiles contain configuration for:
 - [**cp**](https://linux.die.net/man/1/cp) / [**mv**](https://linux.die.net/man/1/mv)
 - [**git**](https://linux.die.net/man/1/git)
 - [**history**](https://linux.die.net/man/1/history)
+- [**kubectl**](https://kubernetes.io/docs/reference/kubectl/)
 - [**ls**](https://linux.die.net/man/1/ls)
 - [**less**](https://linux.die.net/man/1/less)
 - [**man**](https://linux.die.net/man/1/man)
