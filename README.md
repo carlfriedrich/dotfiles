@@ -71,6 +71,7 @@ Here is a list of tools that these dotfiles contain configuration for:
 
 - [**bash**](https://linux.die.net/man/1/bash)
 - [**cp**](https://linux.die.net/man/1/cp) / [**mv**](https://linux.die.net/man/1/mv)
+- [**flux**](https://fluxcd.io/flux/cmd/)
 - [**git**](https://linux.die.net/man/1/git)
 - [**history**](https://linux.die.net/man/1/history)
 - [**k9s**](https://k9scli.io/)
