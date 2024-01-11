@@ -40,6 +40,9 @@ The following tools are contained in these dotfiles in binary or script form:
 - [**fzf**](https://github.com/junegunn/fzf)  
   A general-purpose command-line fuzzy finder
 
+- [**jless**](https://jless.io/)  
+  A command-line JSON viewer
+
 - [**kubectx**](https://github.com/ahmetb/kubectx)  
   Power tools for `kubectl`
 
