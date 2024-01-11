@@ -40,6 +40,9 @@ The following tools are contained in these dotfiles in binary or script form:
 - [**fzf**](https://github.com/junegunn/fzf)  
   A general-purpose command-line fuzzy finder
 
+- [**kubectx**](https://github.com/ahmetb/kubectx)  
+  Power tools for `kubectl`
+
 - [**navi**](https://github.com/denisidoro/navi)  
   Interactive cheatsheet tool
 
