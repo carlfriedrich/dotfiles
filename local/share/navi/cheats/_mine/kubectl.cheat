@@ -1,0 +1,4 @@
+% kubectl
+
+# Select kubectl namespace
+kubectl config set-context --current --namespace=my-namespace
