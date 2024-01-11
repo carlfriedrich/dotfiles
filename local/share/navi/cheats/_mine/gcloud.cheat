@@ -1,0 +1,6 @@
+% gcloud
+
+# Upload file to gcs bucket
+gsutil cp <file> <bucket_url>
+
+$ bucket_url: gsutil ls
