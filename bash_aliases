@@ -61,5 +61,5 @@ alias dv='echo $(cd ~/.dotfiles && git describe --tags --dirty)'
 # Reload .bashrc
 alias sbrc='source ~/.bashrc'
 
-# kubectl
-alias k="kubectl";
+# k9s
+alias k="k9s"
