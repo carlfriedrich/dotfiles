@@ -2,3 +2,11 @@
 
 # Select kubectl namespace
 kubectl config set-context --current --namespace=my-namespace
+
+# Render kustomization
+kubectl kustomize <kustomization_directory>
+$kustomization_directory: find -maxdepth 1 -type d
+
+# Apply kustomization
+kubectl apply --kustomize <kustomization_directory>
+$kustomization_directory: find -maxdepth 1 -type d
