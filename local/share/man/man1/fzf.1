@@ -1,7 +1,7 @@
 .ig
 The MIT License (MIT)
 
-Copyright (c) 2013-2023 Junegunn Choi
+Copyright (c) 2013-2024 Junegunn Choi
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ..
-.TH fzf 1 "Oct 2023" "fzf 0.43.0" "fzf - a command-line fuzzy finder"
+.TH fzf 1 "Jan 2024" "fzf 0.46.0" "fzf - a command-line fuzzy finder"
 
 .SH NAME
 fzf - a command-line fuzzy finder
@@ -192,9 +192,21 @@ Label characters for \fBjump\fR and \fBjump-accept\fR
 .TP
 .BI "--height=" "[~]HEIGHT[%]"
 Display fzf window below the cursor with the given height instead of using
-the full screen. When prefixed with \fB~\fR, fzf will automatically determine
-the height in the range according to the input size. Note that adaptive height
-is not compatible with top/bottom margin and padding given in percent size.
+the full screen.
+
+If a negative value is specified, the height is calculated as the terminal
+height minus the given value.
+
+  fzf --height=-1
+
+When prefixed with \fB~\fR, fzf will automatically determine the height in the
+range according to the input size. Note that adaptive height is not compatible
+with top/bottom margin and padding given in percent size. It is also not
+compatible with a negative height value.
+
+  # Will not take up 100% of the screen
+  seq 5 | fzf --height=~100%
+
 .TP
 .BI "--min-height=" "HEIGHT"
 Minimum height when \fB--height\fR is given in percent (default: 10).
@@ -248,9 +260,8 @@ Draw border around the finder
 .br
 
 If you use a terminal emulator where each box-drawing character takes
-2 columns, try setting \fBRUNEWIDTH_EASTASIAN\fR environment variable to
-\fB0\fR or \fB1\fR. If the border is still not properly rendered, set
-\fB--no-unicode\fR.
+2 columns, try setting \fB--ambidouble\fR. If the border is still not properly
+rendered, set \fB--no-unicode\fR.
 
 .TP
 .BI "--border-label" [=LABEL]
@@ -300,6 +311,11 @@ the label. Label is printed on the top border line by default, add
 .B "--no-unicode"
 Use ASCII characters instead of Unicode drawing characters to draw borders,
 the spinner and the horizontal separator.
+
+.TP
+.B "--ambidouble"
+Set this option if your terminal displays ambiguous width characters (e.g.
+box-drawing characters for borders) as 2 columns.
 
 .TP
 .BI "--margin=" MARGIN
@@ -548,6 +564,9 @@ they represent the exact size of the preview window. (It also overrides
 by the default shell, so prefer to refer to the ones with \fBFZF_PREVIEW_\fR
 prefix.)
 
+fzf also exports \fB$FZF_PREVIEW_TOP\fR and \fB$FZF_PREVIEW_LEFT\fR so that
+the preview command can determine the position of the preview window.
+
 A placeholder expression starting with \fB+\fR flag will be replaced to the
 space-separated list of the selected lines (or the current line if no selection
 was made) individually quoted.
@@ -559,10 +578,6 @@ e.g.
 When using a field index expression, leading and trailing whitespace is stripped
 from the replacement string. To preserve the whitespace, use the \fBs\fR flag.
 
-Also, \fB{q}\fR is replaced to the current query string, and \fB{n}\fR is
-replaced to zero-based ordinal index of the line. Use \fB{+n}\fR if you want
-all index numbers when multiple lines are selected.
-
 A placeholder expression with \fBf\fR flag is replaced to the path of
 a temporary file that holds the evaluated list. This is useful when you
 multi-select a large number of items and the length of the evaluated string may
@@ -573,6 +588,14 @@ e.g.
      # This won't work properly without 'f' flag due to ARG_MAX limit.
      seq 100000 | fzf --multi --bind ctrl-a:select-all \\
                       --preview "awk '{sum+=\\$1} END {print sum}' {+f}"\fR
+
+Also,
+
+* \fB{q}\fR (or \fB{fzf:query}\fR) is replaced to the current query string
+.br
+* \fB{n}\fR is replaced to the zero-based ordinal index of the current item.
+  Use \fB{+n}\fR if you want all index numbers when multiple lines are selected.
+.br
 
 Note that you can escape a placeholder pattern by prepending a backslash.
 
@@ -592,17 +615,13 @@ e.g.
         sleep 0.01
       done'\fR
 
-Since 0.43.0, fzf has experimental support for Kitty graphics protocol,
-so if you use Kitty, you can make fzf display an image in the preview window.
+fzf has experimental support for Kitty graphics protocol and Sixel graphics.
+The following example uses https://github.com/junegunn/fzf/blob/master/bin/fzf-preview.sh
+script to render an image using either of the protocols inside the preview window.
 
 e.g.
-      \fBfzf --preview='
-        if file --mime-type {} | grep -qF "image/"; then
-          kitty icat --clear --transfer-mode=memory --stdin=no --place=${FZF_PREVIEW_COLUMNS}x${FZF_PREVIEW_LINES}@0x0 {} | sed \\$d
-        else
-          bat --color=always {}
-        fi
-      '\fR
+      \fBfzf --preview='fzf-preview.sh {}'
+
 .RE
 
 .TP
@@ -794,27 +813,38 @@ ncurses finder only after the input stream is complete.
 e.g. \fBfzf --multi | fzf --sync\fR
 .RE
 .TP
-.B "--listen[=HTTP_PORT]"
-Start HTTP server on the given port. It allows external processes to send
-actions to perform via POST method. If the port number is omitted or given as
-0, fzf will choose the port automatically and export it as \fBFZF_PORT\fR
-environment variable to the child processes started via \fBexecute\fR and
-\fBexecute-silent\fR actions. If \fBFZF_API_KEY\fR environment variable is
-set, the server would require sending an API key with the same value in the
-\fBx-api-key\fR HTTP header.
+.B "--listen[=[ADDR:]PORT]" "--listen-unsafe[=[ADDR:]PORT]"
+Start HTTP server and listen on the given address. It allows external processes
+to send actions to perform via POST method.
+
+- If the port number is omitted or given as 0, fzf will automatically choose
+a port and export it as \fBFZF_PORT\fR environment variable to the child processes
+
+- If \fBFZF_API_KEY\fR environment variable is set, the server would require
+sending an API key with the same value in the \fBx-api-key\fR HTTP header
+
+- \fBFZF_API_KEY\fR is required for a non-localhost listen address
+
+- To allow remote process execution, use \fB--listen-unsafe\fR
 
 e.g.
      \fB# Start HTTP server on port 6266
      fzf --listen 6266
 
-     # Get program state in JSON format (experimental)
-     curl localhost:6266
-
      # Send action to the server
      curl -XPOST localhost:6266 -d 'reload(seq 100)+change-prompt(hundred> )'
 
-     # Start HTTP server on port 6266 and send an authenticated action
+     # Get program state in JSON format (experimental)
+     # * Make sure NOT to access this endpoint from execute/transform actions
+     #   as it will result in a timeout
+     curl localhost:6266
+
+     # Start HTTP server on port 6266 with remote connections allowed
+     # * Listening on non-localhost address requires using an API key
      export FZF_API_KEY="$(head -c 32 /dev/urandom | base64)"
+     fzf --listen 0.0.0.0:6266
+
+     # Send an authenticated action
      curl -XPOST localhost:6266 -H "x-api-key: $FZF_API_KEY" -d 'change-query(yo)'
 
      # Choose port automatically and export it as $FZF_PORT to the child process
@@ -874,6 +904,39 @@ of field index expressions.
 .br
 .BR .. "     All the fields"
 .br
+
+.SH ENVIRONMENT VARIABLES EXPORTED TO CHILD PROCESSES
+
+fzf exports the following environment variables to its child processes.
+
+.BR FZF_LINES "           Number of lines fzf takes up excluding padding and margin"
+.br
+.BR FZF_COLUMNS "         Number of columns fzf takes up excluding padding and margin"
+.br
+.BR FZF_TOTAL_COUNT "     Total number of items"
+.br
+.BR FZF_MATCH_COUNT "     Number of matched items"
+.br
+.BR FZF_SELECT_COUNT "    Number of selected items"
+.br
+.BR FZF_QUERY "           Current query string"
+.br
+.BR FZF_PROMPT "          Prompt string"
+.br
+.BR FZF_ACTION "          The name of the last action performed"
+.br
+.BR FZF_PORT "            Port number when --listen option is used"
+.br
+
+The following variables are additionally exported to the preview commands.
+
+.BR FZF_PREVIEW_TOP "     Top position of the preview window"
+.br
+.BR FZF_PREVIEW_LEFT "    Left position of the preview window"
+.br
+.BR FZF_PREVIEW_LINES "   Number of lines in the preview window"
+.br
+.BR FZF_PREVIEW_COLUMNS " Number of columns in the preview window"
 
 .SH EXTENDED SEARCH MODE
 
@@ -1049,6 +1112,22 @@ e.g.
      \fB# Change the prompt to "loaded" when the input stream is complete
      (seq 10; sleep 1; seq 11 20) | fzf --prompt 'Loading> ' --bind 'load:change-prompt:Loaded> '\fR
 .RE
+\fIresize\fR
+.RS
+Triggered when the terminal size is changed.
+
+e.g.
+     \fBfzf --bind 'resize:transform-header:echo Resized: ${FZF_COLUMNS}x${FZF_LINES}'\fR
+.RE
+\fIresult\fR
+.RS
+Triggered when the filtering for the current query is complete and the result list is ready.
+
+e.g.
+     \fB# Put the cursor on the second item when the query string is empty
+     # * Note that you can't use 'change' event in this case because the second position may not be available
+     fzf --sync --bind 'result:transform:[[ -z {fzf:query} ]] && echo "pos(2)"'\fR
+.RE
 \fIchange\fR
 .RS
 Triggered whenever the query string is changed
@@ -1112,6 +1191,7 @@ A key or an event can be bound to one or more of the following actions.
     \fBabort\fR                        \fIctrl-c  ctrl-g  ctrl-q  esc\fR
     \fBaccept\fR                       \fIenter   double-click\fR
     \fBaccept-non-empty\fR             (same as \fBaccept\fR except that it prevents fzf from exiting without selection)
+    \fBaccept-or-print-query\fR        (same as \fBaccept\fR except that it prints the query when there's no match)
     \fBbackward-char\fR                \fIctrl-b  left\fR
     \fBbackward-delete-char\fR         \fIctrl-h  bspace\fR
     \fBbackward-delete-char/eof\fR     (same as \fBbackward-delete-char\fR except aborts fzf if query is empty)
@@ -1156,6 +1236,7 @@ A key or an event can be bound to one or more of the following actions.
     \fBpage-up\fR                      \fIpgup\fR
     \fBhalf-page-down\fR
     \fBhalf-page-up\fR
+    \fBhide-header\fR
     \fBhide-preview\fR
     \fBoffset-down\fR                  (similar to CTRL-E of Vim)
     \fBoffset-up\fR                    (similar to CTRL-Y of Vim)
@@ -1181,6 +1262,7 @@ A key or an event can be bound to one or more of the following actions.
     \fBreplace-query\fR                (replace query string with the current selection)
     \fBselect\fR
     \fBselect-all\fR                   (select all matches)
+    \fBshow-header\fR
     \fBshow-preview\fR
     \fBtoggle\fR                       (\fIright-click\fR)
     \fBtoggle-all\fR                   (toggle all matches)
@@ -1195,6 +1277,7 @@ A key or an event can be bound to one or more of the following actions.
     \fBtoggle-track\fR
     \fBtoggle+up\fR                    \fIbtab    (shift-tab)\fR
     \fBtrack\fR                        (track the current item; automatically disabled if focus changes)
+    \fBtransform(...)\fR               (transform states using the output of an external command)
     \fBtransform-border-label(...)\fR  (transform border label using an external command)
     \fBtransform-header(...)\fR        (transform header using an external command)
     \fBtransform-preview-label(...)\fR (transform preview label using an external command)
@@ -1306,6 +1389,28 @@ against an empty list while the command is running.
 e.g.
      \fB# You can still filter and select entries from the initial list for 3 seconds
      seq 100 | fzf --bind 'load:reload-sync(sleep 3; seq 1000)+unbind(load)'\fR
+
+.SS TRANSFORM ACTIONS
+
+Actions with \fBtransform-\fR prefix are used to transform the states of fzf
+using the output of an external command. The output of these commands are
+expected to be a single line of text.
+
+e.g.
+    \fBfzf --bind 'focus:transform-header:file --brief {}'\fR
+
+\fBtransform(...)\fR action runs an external command that should print a series
+of actions to be performed. The output should be in the same format as the
+payload of HTTP POST request to the \fB--listen\fR server.
+
+e.g.
+    \fB# Disallow selecting an empty line
+    echo -e "1. Hello\\n2. Goodbye\\n\\n3. Exit" |
+      fzf --height '~100%' --reverse --header 'Select one' \\
+          --bind 'enter:transform:[[ -n {} ]] &&
+                    echo accept ||
+                    echo "change-header:Invalid selection"'
+    \fR
 
 .SS PREVIEW BINDING
 

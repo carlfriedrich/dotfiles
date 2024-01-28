@@ -140,6 +140,7 @@ export FZF_DEFAULT_OPTS="
   --color=16,fg+:bright-white,hl:magenta,hl+:bright-magenta,info:yellow,\
 spinner:green,pointer:red,marker:red,border:grey,bg+:#303336
 "
+export FZF_CTRL_R_OPTS='--bind enter:accept-or-print-query'
 
 # navi options
 export NAVI_FZF_OVERRIDES='--tiebreak=begin,index --with-nth 3,2'
