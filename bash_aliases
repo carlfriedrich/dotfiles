@@ -63,3 +63,8 @@ alias sbrc='source ~/.bashrc'
 
 # k9s
 alias k="k9s"
+
+# FIXME: https://github.com/momo-lab/bash-abbrev-alias
+alias cdp="cd ../production"
+alias cds="cd ../staging"
+alias cdd="cd ../devel"
