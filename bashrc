@@ -142,6 +142,7 @@ export FZF_DEFAULT_OPTS="
 spinner:green,pointer:red,marker:red,border:grey,bg+:#303336
 "
 export FZF_CTRL_R_OPTS='--bind enter:accept-or-print-query'
+export FZF_CTRL_T_OPTS='--bind "alt-enter:execute-silent($EDITOR {})"'
 
 # navi options
 export NAVI_FZF_OVERRIDES='--tiebreak=begin,index --with-nth 3,2'
