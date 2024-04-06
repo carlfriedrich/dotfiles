@@ -104,7 +104,7 @@ export FORGIT_STASH_FZF_OPTS="
 export FORGIT_DIFF_FZF_OPTS="
 	--exit-0
 	--preview-window='top:80%'
-	--border=none
+	--color=label:gray
 "
 
 export FORGIT_ADD_FZF_OPTS="
