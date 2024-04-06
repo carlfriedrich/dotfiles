@@ -185,7 +185,12 @@ _forgit_log_enter() {
     local sha
     sha=$(echo "$1" | _forgit_extract_sha)
     shift
-    echo "$sha" | xargs -I% "${FORGIT}" diff %^! "$@"
+    # FIXME: This is necessary for merge commits. Only ways to correctly show merge commits:
+    # - git show -m c05f017
+    # - git show --first-parent c05f017
+    # - git diff c05f017^ c05f017
+    # See https://stackoverflow.com/a/40986893/3018229
+    echo "$sha" | xargs -I% "${FORGIT}" diff %^ % "$@"
 }
 
 # git commit viewer
