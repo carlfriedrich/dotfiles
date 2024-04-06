@@ -19,4 +19,5 @@ git -c rebase.instructionFormat='%s%nexec GIT_COMMITTER_DATE="%cD" git commit --
 git fetch <remote> pull/<id>/head:<local-branch-name>
 
 $ remote: git remote
+$ id: curl -s "$(git remote get-url $remote | sed 's#github.com#api.github.com/repos#' | sed -r 's/(.*)\.git/\1/')/pulls" | jq -r '.[] | (.number|tostring) + ": " + .title' --- --column 1 --delimiter ':'
 $ local-branch-name: curl -s "$(git remote get-url $remote | sed 's#github.com#api.github.com/repos#' | sed -r 's/(.*)\.git/\1/')/pulls/$id" | jq .head.ref
