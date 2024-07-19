@@ -86,6 +86,9 @@ fi
 GIT_COMPLETION_FULL_INDEX_PATHS=1
 GIT_COMPLETION_SHOW_ALL=1
 
+# Set up fzf key bindings and fuzzy completion
+eval "$(fzf --bash)"
+
 #-------------------------------------------------------------------------------
 # Aliases
 #-------------------------------------------------------------------------------
@@ -143,9 +146,6 @@ spinner:green,pointer:red,marker:red,border:grey,bg+:#303336
 "
 export FZF_CTRL_R_OPTS='--bind enter:accept-or-print-query'
 export FZF_CTRL_T_OPTS='--bind "alt-enter:execute-silent($EDITOR {})"'
-
-# Set up fzf key bindings and fuzzy completion
-eval "$(fzf --bash)"
 
 # navi options
 export NAVI_FZF_OVERRIDES='--tiebreak=begin,index --with-nth 3,2'
