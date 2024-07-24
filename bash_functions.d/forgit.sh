@@ -138,3 +138,6 @@ __call_and_insert_stdout_to_prompt() {
 	READLINE_POINT=$(( ${READLINE_POINT} + ${#stdout} ))
 }
 bind -x '"\C-g":__call_and_insert_stdout_to_prompt __forgit_log'
+
+# FIXME: Use FZF_PREVIEW_LABEL for different previews:
+# https://github.com/junegunn/fzf/releases/tag/0.49.0
