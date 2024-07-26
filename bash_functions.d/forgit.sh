@@ -71,6 +71,7 @@ export FORGIT_LOG_FZF_OPTS="
 	--bind='alt-bspace:execute($FORGIT_LOG_REVERT_COMMAND)+cancel'
 	--bind='ctrl-r:execute($FORGIT_LOG_REBASE_COMMAND)+cancel'
 	--bind='ctrl-b:execute($FORGIT_LOG_BROWSER_COMMAND)'
+	--bind='ctrl-s:accept'
 	--border=bottom
 	--border-label=' [ENTER] show - [ALT+ENTER] checkout - [ALT+BACKSPACE] revert - [CTRL+R] rebase - [CTRL+B] open browser '
 	--color=label:gray
@@ -125,7 +126,17 @@ if which clip.exe > /dev/null; then
 	export FORGIT_COPY_CMD="clip.exe"
 fi
 
-# Bind forgit log to Ctrl+G
-# We do this in a two-step way in order to redraw the prompt afterwards
-bind -x '"\C-x\C-s":"git forgit log"'
-bind '"\C-g":"\C-x\C-s\n"'
+# Bind forgit log to Ctrl+G and insert selected sha into prompt
+__forgit_log() {
+	git forgit log | cut -d' ' -f1
+}
+__call_and_insert_stdout_to_prompt() {
+	local stdout after_cursor_count before_cursor after_cursor
+	stdout=$($1)
+	after_cursor_count=$(( ${#READLINE_LINE} - ${READLINE_POINT} ))
+	before_cursor=${READLINE_LINE:0:${READLINE_POINT}}
+	after_cursor=${READLINE_LINE:${READLINE_POINT}:${after_cursor_count}}
+	READLINE_LINE="${before_cursor}${stdout}${after_cursor}"
+	READLINE_POINT=$(( ${READLINE_POINT} + ${#stdout} ))
+}
+bind -x '"\C-g":__call_and_insert_stdout_to_prompt __forgit_log'
