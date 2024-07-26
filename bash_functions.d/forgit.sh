@@ -61,14 +61,18 @@ export FORGIT_LOG_REVERT_COMMAND='echo {} | cut -d" " -f1 | xargs -I % git rever
 # Rebase on ctrl-r
 export FORGIT_LOG_REBASE_COMMAND='echo {} | cut -d" " -f1 | xargs -I % git rebase -i %'
 
+# Open in browser on ctrl-b
+export FORGIT_LOG_BROWSER_COMMAND='echo {} | cut -d" " -f1 | ~/.local/share/scripts/commit_link.sh | xargs -I % www-browser %'
+
 export FORGIT_LOG_FZF_OPTS="
 	--preview-window=top:40%
 	--preview='$FORGIT_LOG_PREVIEW_COMMAND'
 	--bind='alt-enter:execute($FORGIT_LOG_CHECKOUT_COMMAND)+cancel'
 	--bind='alt-bspace:execute($FORGIT_LOG_REVERT_COMMAND)+cancel'
 	--bind='ctrl-r:execute($FORGIT_LOG_REBASE_COMMAND)+cancel'
+	--bind='ctrl-b:execute($FORGIT_LOG_BROWSER_COMMAND)'
 	--border=bottom
-	--border-label=' [ENTER] show - [ALT+ENTER] checkout - [ALT+BACKSPACE] revert - [CTRL+R] rebase '
+	--border-label=' [ENTER] show - [ALT+ENTER] checkout - [ALT+BACKSPACE] revert - [CTRL+R] rebase - [CTRL+B] open browser '
 	--color=label:gray
 "
 
