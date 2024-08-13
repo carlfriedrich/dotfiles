@@ -68,3 +68,6 @@ alias k="k9s"
 alias cdp="cd ../production"
 alias cds="cd ../staging"
 alias cdd="cd ../devel"
+
+# cd to git root
+alias cdr='cd $(git rev-parse --show-toplevel)'
