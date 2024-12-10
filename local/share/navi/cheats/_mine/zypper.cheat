@@ -1,0 +1,12 @@
+% zypper
+
+# Upgrade distribution
+sudo zypper dist-upgrade
+
+# List all available patterns
+zypper search --type pattern
+
+# Get information for a specific pattern
+zypper info --type pattern <pattern>
+
+$ pattern: zypper search --type pattern | tail --lines +6 | cut -d'|' -f2 | awk '{$1=$1};1'
