@@ -55,6 +55,7 @@
 	rbc = rebase --continue
 	rc = forgit revert_commit
 	rh = forgit reset_head
+	rl = forgit reflog
 	s = status
 	ss = forgit stash_show
 
