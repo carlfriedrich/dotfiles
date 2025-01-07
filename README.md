@@ -49,6 +49,9 @@ The following tools are contained in these dotfiles in binary or script form:
 - [**navi**](https://github.com/denisidoro/navi)  
   Interactive cheatsheet tool
 
+- [**presenterm**](https://github.com/mfontanini/presenterm)  
+   A markdown terminal slideshow tool
+
 - [**print256colours**](https://gist.github.com/HaleTom/89ffe32783f89f403bba96bd7bcd1263)  
   Print all 256 colours to the terminal
 
