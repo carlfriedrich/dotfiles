@@ -10,3 +10,6 @@ zypper search --type pattern
 zypper info --type pattern <pattern>
 
 $ pattern: zypper search --type pattern | tail --lines +6 | cut -d'|' -f2 | awk '{$1=$1};1'
+
+# Find packages which provide a certain file (needs complete path, e.g. /usr/bin/zip)
+zypper search --provides --match-exact
