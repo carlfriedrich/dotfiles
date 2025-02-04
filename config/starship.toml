@@ -45,7 +45,7 @@ format = "[$user]($style) "
 
 [hostname]
 style = "purple"
-ssh_symbol = "ﲾ "
+ssh_symbol = "󰟀 "
 format = "[$ssh_symbol$hostname]($style): "
 
 [directory]
@@ -58,7 +58,7 @@ home_symbol = " "
 [git_branch]
 style = "green"
 format = "[$symbol$branch(:$remote_branch)]($style)"
-symbol = "שׂ "
+symbol = "󰘬 "
 
 # Show single changed indicator only
 [git_status]
@@ -100,7 +100,7 @@ disabled = true
 
 [python]
 style = "bright-black"
-symbol = " "
+symbol = " "
 version_format = "${raw}"
 format = '[${symbol}${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
 
@@ -131,8 +131,8 @@ disabled = false
 style = "yellow"
 format = "[$indicator]($style)"
 bash_indicator = ""
-fish_indicator = " "
-zsh_indicator = "鈴 "
+fish_indicator = " "
+zsh_indicator = "󰒲 "
 powershell_indicator = "_ "
 unknown_indicator = " "
 
