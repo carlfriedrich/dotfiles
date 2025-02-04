@@ -40,7 +40,7 @@ $character"""
 add_newline = true
 
 [username]
-style_user = "purple"
+style_user = "yellow"
 format = "[$user]($style) "
 
 [hostname]
