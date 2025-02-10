@@ -1,0 +1,7 @@
+% docker
+
+# Copy and push tag to new tag
+docker buildx imagetools create <old_tag> --tag <new_tag>
+
+$old_tag: docker images --format="{{.Repository}}:{{.Tag}}"
+$new_tag: echo $old_tag
