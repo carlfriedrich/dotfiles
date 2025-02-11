@@ -44,6 +44,7 @@
 	fu = forgit fixup
 	i = forgit ignore
 	l = forgit log
+	lg = forgit log --graph
 	ll = log --oneline --pretty=format:'%C(yellow)%h%C(reset)  %C(white)%s%C(reset)%C(auto)%d%C(reset) %C(dim white) %an, %ar%C(reset)'
 	# Bypass diff-so-fancy
 	patch = !git --no-pager diff
