@@ -1,0 +1,7 @@
+% user
+
+# Add user to existing group
+sudo adduser <user> <group>
+
+$ user: cat /etc/passwd | grep '/home' | cut -d: -f1
+$ group: cat /etc/group | cut -d: -f1
