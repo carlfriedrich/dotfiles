@@ -57,6 +57,7 @@
 	rc = forgit revert_commit
 	rh = forgit reset_head
 	rl = forgit reflog
+	rw = forgit reword
 	s = status
 	ss = forgit stash_show
 
