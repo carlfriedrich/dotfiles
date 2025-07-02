@@ -92,7 +92,7 @@ export FORGIT_STASH_PREVIEW_COMMAND='f() {
 }; f {}'
 
 # Use forgit diff on stash enter
-export FORGIT_STASH_ENTER_COMMAND='echo {} | _forgit_extract_stash | xargs -I % git forgit diff %^1 %'
+export FORGIT_STASH_ENTER_COMMAND='echo {} | _forgit_extract_stash | xargs -I % git forgit show %'
 
 # Pop stash on alt-enter
 export FORGIT_STASH_POP_COMMAND='echo {} | _forgit_extract_stash | xargs -I % git stash pop %'
