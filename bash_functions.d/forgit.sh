@@ -4,6 +4,16 @@
 # Include and customize forgit:
 # https://github.com/wfxr/forgit
 #-------------------------------------------------------------------------------
+_forgit_extract_sha() {
+	grep -Eo '[a-f0-9]+' | head -1 | tr -d '[:space:]'
+}
+export -f _forgit_extract_sha
+
+_forgit_extract_stash() {
+	grep -Eo "stash@\{[0-9]*\}" | head -1 | tr -d '[:space:]'
+}
+export -f _forgit_extract_stash
+
 export FORGIT_FZF_DEFAULT_OPTS="
 	--reverse
 	--exact
@@ -46,21 +56,21 @@ export FORGIT_LOG_FORMAT="%C(auto)%h %s%d"
 
 # Use custom preview in log
 export FORGIT_LOG_PREVIEW_COMMAND='f() {
-	set -- $(echo -- "$@" | grep -Eo "[a-f0-9]+")
+	set -- $(echo -- "$@" | _forgit_extract_sha)
 	[ $# -eq 0 ] || ('$FORGIT_CUSTOM_PREVIEW')
 }; f {}'
 
 # Checkout on alt-enter
-export FORGIT_LOG_CHECKOUT_COMMAND='echo {} | cut -d" " -f1 | xargs -I % git checkout %'
+export FORGIT_LOG_CHECKOUT_COMMAND='echo {} | _forgit_extract_sha | xargs -I % git checkout %'
 
 # Revert on alt-backspace
-export FORGIT_LOG_REVERT_COMMAND='echo {} | cut -d" " -f1 | xargs -I % git revert %'
+export FORGIT_LOG_REVERT_COMMAND='echo {} | _forgit_extract_sha | xargs -I % git revert %'
 
 # Rebase on ctrl-r
-export FORGIT_LOG_REBASE_COMMAND='echo {} | cut -d" " -f1 | xargs -I % git rebase -i %'
+export FORGIT_LOG_REBASE_COMMAND='echo {} | _forgit_extract_sha | xargs -I % git rebase -i %'
 
 # Open in browser on ctrl-b
-export FORGIT_LOG_BROWSER_COMMAND='echo {} | cut -d" " -f1 | ~/.local/share/scripts/commit_link.sh | xargs -I % www-browser %'
+export FORGIT_LOG_BROWSER_COMMAND='echo {} | _forgit_extract_sha | ~/.local/share/scripts/commit_link.sh | xargs -I % www-browser %'
 
 export FORGIT_LOG_FZF_OPTS="
 	--preview-window=top:40%
@@ -77,18 +87,18 @@ export FORGIT_LOG_FZF_OPTS="
 
 # Use custom preview in stash
 export FORGIT_STASH_PREVIEW_COMMAND='f() {
-	set -- $(echo -- "$@" | grep -Eo "stash@\{[0-9]*\}")
+	set -- $(echo -- "$@" | _forgit_extract_stash)
 	[ $# -eq 0 ] || ('$FORGIT_CUSTOM_PREVIEW')
 }; f {}'
 
 # Use forgit diff on stash enter
-export FORGIT_STASH_ENTER_COMMAND='echo {} | cut -d: -f1 | xargs -I % git forgit diff %^1 %'
+export FORGIT_STASH_ENTER_COMMAND='echo {} | _forgit_extract_stash | xargs -I % git forgit diff %^1 %'
 
 # Pop stash on alt-enter
-export FORGIT_STASH_POP_COMMAND='echo {} | cut -d: -f1 | xargs -I % git stash pop %'
+export FORGIT_STASH_POP_COMMAND='echo {} | _forgit_extract_stash | xargs -I % git stash pop %'
 
 # Drop stash on alt-backspace
-export FORGIT_STASH_DROP_COMMAND='echo {} | cut -d: -f1 | xargs -I % git stash drop %'
+export FORGIT_STASH_DROP_COMMAND='echo {} | _forgit_extract_stash | xargs -I % git stash drop %'
 
 export FORGIT_STASH_FZF_OPTS="
 	--preview-window=top:50%
