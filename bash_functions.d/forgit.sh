@@ -91,9 +91,6 @@ export FORGIT_STASH_PREVIEW_COMMAND='f() {
 	[ $# -eq 0 ] || ('$FORGIT_CUSTOM_PREVIEW')
 }; f {}'
 
-# Use forgit diff on stash enter
-export FORGIT_STASH_ENTER_COMMAND='echo {} | _forgit_extract_stash | xargs -I % git forgit show %'
-
 # Pop stash on alt-enter
 export FORGIT_STASH_POP_COMMAND='echo {} | _forgit_extract_stash | xargs -I % git stash pop %'
 
@@ -103,7 +100,6 @@ export FORGIT_STASH_DROP_COMMAND='echo {} | _forgit_extract_stash | xargs -I % g
 export FORGIT_STASH_FZF_OPTS="
 	--preview-window=top:50%
 	--preview='$FORGIT_STASH_PREVIEW_COMMAND'
-	--bind='enter:execute($FORGIT_STASH_ENTER_COMMAND)'
 	--bind='alt-enter:execute($FORGIT_STASH_POP_COMMAND)+accept'
 	--bind='alt-bspace:execute($FORGIT_STASH_DROP_COMMAND)+reload(git stash list)'
 	--border=bottom
@@ -130,7 +126,7 @@ export FORGIT_CHECKOUT_FILE_FZF_OPTS="
 "
 
 # Use Windows clipboard in WSL
-if which clip.exe > /dev/null; then
+if which clip.exe >/dev/null; then
 	export FORGIT_COPY_CMD="clip.exe"
 fi
 
@@ -141,10 +137,10 @@ __forgit_log() {
 __call_and_insert_stdout_to_prompt() {
 	local stdout after_cursor_count before_cursor after_cursor
 	stdout=$($1)
-	after_cursor_count=$(( ${#READLINE_LINE} - ${READLINE_POINT} ))
+	after_cursor_count=$((${#READLINE_LINE} - ${READLINE_POINT}))
 	before_cursor=${READLINE_LINE:0:${READLINE_POINT}}
 	after_cursor=${READLINE_LINE:${READLINE_POINT}:${after_cursor_count}}
 	READLINE_LINE="${before_cursor}${stdout}${after_cursor}"
-	READLINE_POINT=$(( ${READLINE_POINT} + ${#stdout} ))
+	READLINE_POINT=$((${READLINE_POINT} + ${#stdout}))
 }
 bind -x '"\C-g":__call_and_insert_stdout_to_prompt __forgit_log'
