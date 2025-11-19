@@ -111,6 +111,7 @@ These dotfiles come with a set of preconfigured bash keybindings:
   Opens an `fzf` window executing a `ripgrep` search in the current directory
   using the entered search string. Press `Enter` to open the file in your
   default editor. Press `Alt+Enter` to open it without closing the `fzf` window.
+  Press `Tab` to toggle a preview. Press `Ctrl+H` to toggle hidden files.
 
 - **Interactive git log** <kbd>**Ctrl**</kbd>+<kbd>**G**</kbd>  
   Runs `git forgit` for interactive git history.

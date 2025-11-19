@@ -26,6 +26,9 @@ __rg_find() {
           --delimiter : \
           --preview 'bat --color=always {1} --style=numbers --highlight-line {2}' \
           --preview-window 'up,50%,+{2}/2:hidden' \
+          --border bottom \
+          --border-label " [TAB] preview - [ALT+ENTER] open in editor - [CTRL+H] toggle hidden files " \
+          --color=label:gray
     )
     [ -n "${selected[0]}" ] && $EDITOR -g "${selected[0]}:${selected[1]}"
 }
