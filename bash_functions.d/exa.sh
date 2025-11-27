@@ -3,7 +3,7 @@
 #-------------------------------------------------------------------------------
 # Modify exa output
 #-------------------------------------------------------------------------------
-function _exa()
+function pimped_exa()
 {
     # check if output is redirected
     # https://stackoverflow.com/q/26761627/3018229

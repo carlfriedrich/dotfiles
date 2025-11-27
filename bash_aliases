@@ -33,7 +33,7 @@ alias l='ls -CF'
 # -F display type indicator (e.g. "/" on directories)
 alias exa='exa --group-directories-first'
 alias ls='exa -F'
-alias ll='_exa -lagF --git --icons --time-style=long-iso'
+alias ll='pimped_exa -lagF --git --icons --time-style=long-iso'
 alias la='exa -aF'
 alias l='exa -F'
 alias tree='exa --tree'
