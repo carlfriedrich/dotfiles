@@ -51,6 +51,7 @@
 	p = pull --prune --recurse-submodules
 	pushf = push --force-with-lease
 	pusht = !bash -ic 'git push --set-upstream origin $(git branch --show-current)'
+	pushtf = !bash -ic 'git push --set-upstream origin $(git branch --show-current) --force-with-lease'
 	rb = forgit rebase
 	rba = rebase --abort
 	rbc = rebase --continue
