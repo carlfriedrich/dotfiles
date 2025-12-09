@@ -34,6 +34,7 @@
 	co = forgit checkout_commit
 	cp = forgit cherry_pick_from_branch
 	cpa = cherry-pick --abort
+	cpc = cherry-pick --continue
 	ct = forgit checkout_tag
 	d = forgit diff
 	ds = forgit diff --staged
