@@ -125,6 +125,7 @@ fi
 # Set default editor
 if which code >/dev/null; then
     export EDITOR=code
+    export FCEDIT="code --wait"
 else
     export EDITOR=tilde
 fi
