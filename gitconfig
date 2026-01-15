@@ -58,7 +58,11 @@
 	rbc = rebase --continue
 	rc = forgit revert_commit
 	rh = forgit reset_head
+	rha = forgit reset_head -q
+	rhh = reset --hard HEAD
+	rhp = reset --hard HEAD^
 	rl = forgit reflog
+	rp = reset HEAD^
 	rw = forgit reword
 	s = status
 	ss = forgit stash_show
