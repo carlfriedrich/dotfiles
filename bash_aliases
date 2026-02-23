@@ -71,3 +71,6 @@ alias cdd="cd ../devel"
 
 # cd to git root
 alias cdr='cd $(git rev-parse --show-toplevel)'
+
+# opencode
+alias oc='opencode'
