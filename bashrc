@@ -133,6 +133,9 @@ fi
 # Add cargo packages to PATH
 path_prepend ${HOME}/.cargo/bin
 
+# Add opencode to PATH
+path_prepend ${HOME}/.opencode/bin
+
 # Default options for fzf
 export FZF_DEFAULT_OPTS="
   --reverse
