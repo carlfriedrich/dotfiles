@@ -73,4 +73,4 @@ alias cdd="cd ../devel"
 alias cdr='cd $(git rev-parse --show-toplevel)'
 
 # opencode
-alias oc='opencode'
+alias oc='opencode --agent plan'
