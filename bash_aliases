@@ -75,3 +75,7 @@ alias cdr='cd $(git rev-parse --show-toplevel)'
 # opencode
 alias oc='EDITOR="code --wait" opencode --agent plan'
 alias occ='oc --continue'
+
+# Claude Code
+alias cc='EDITOR="code --wait" claude'
+alias ccc='claude --continue'
