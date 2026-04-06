@@ -51,6 +51,9 @@ export FORGIT_ENTER_PAGER="LESS='-Rc' less"
 # Do not display graph because it takes too long on large repos
 export FORGIT_LOG_GRAPH_ENABLE=false
 
+# Add new worktrees in <repo-root>/.worktrees
+export FORGIT_WORKTREE_ADD_DIR="$(git worktree list --porcelain | sed -n 's/^worktree //p;q')/.worktrees"
+
 # Customize log format: move decorators behind commit message
 export FORGIT_LOG_FORMAT="%C(auto)%h %s%d"
 
