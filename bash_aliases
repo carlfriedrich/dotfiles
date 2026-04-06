@@ -72,6 +72,9 @@ alias cdd="cd ../devel"
 # cd to git root
 alias cdr='cd $(git rev-parse --show-toplevel)'
 
+# cd to worktree
+alias wt='cd $(git forgit worktree || pwd)'
+
 # opencode
 alias oc='EDITOR="code --wait" opencode --agent plan'
 alias occ='oc --continue'
