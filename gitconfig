@@ -66,6 +66,8 @@
 	rw = forgit reword
 	s = status
 	ss = forgit stash_show
+	wa = forgit worktree_add
+	wd = forgit worktree_delete
 
 [advice]
 	skippedCherryPicks = false
