@@ -69,8 +69,8 @@ alias cdp="cd ../production"
 alias cds="cd ../staging"
 alias cdd="cd ../devel"
 
-# cd to git root
-alias cdr='cd $(git rev-parse --show-toplevel)'
+# cd to the root of the main worktree, from any worktree of the repository
+alias cdr='cd "$(git worktree list --porcelain 2>/dev/null | sed -n "s/^worktree //p;q")"'
 
 # cd to worktree
 alias wt='cd $(git forgit worktree || pwd)'
