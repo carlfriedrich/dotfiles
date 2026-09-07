@@ -10,7 +10,8 @@
       "Edit(*)",
       "Write(*)",
       "NotebookEdit(*)"
-    ]
+    ],
+    "defaultMode": "bypassPermissions"
   },
   "statusLine": {
     "type": "command",
