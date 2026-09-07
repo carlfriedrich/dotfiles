@@ -1,5 +1,4 @@
 {
-  "model": "opus[1m]",
   "attribution": {
     "commit": "",
     "pr": ""
@@ -28,5 +27,10 @@
         "repo": "ryanbbrown/revealjs-skill"
       }
     }
-  }
+  },
+  "effortLevel": "high",
+  "tui": "fullscreen",
+  "skipDangerousModePermissionPrompt": true,
+  "theme": "dark-ansi",
+  "skipAutoPermissionPrompt": true
 }
