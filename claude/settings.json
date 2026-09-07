@@ -20,5 +20,13 @@
   },
   "enabledPlugins": {
     "claude-md-management@claude-plugins-official": true
+  },
+  "extraKnownMarketplaces": {
+    "revealjs-skill": {
+      "source": {
+        "source": "github",
+        "repo": "ryanbbrown/revealjs-skill"
+      }
+    }
   }
 }
