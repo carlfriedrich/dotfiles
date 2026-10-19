@@ -82,3 +82,4 @@ alias occ='oc --continue'
 # Claude Code
 alias cc='EDITOR="code --wait" claude'
 alias ccc='claude --continue'
+alias ccr='claude --resume'
