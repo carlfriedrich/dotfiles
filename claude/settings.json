@@ -8,9 +8,34 @@
       "Bash(*)",
       "Edit(*)",
       "Write(*)",
-      "NotebookEdit(*)"
+      "NotebookEdit(*)",
+      "Bash('/home/tim/.local/share/fnm/node-versions/v20.18.1/installation/lib/node_modules/@llmtrim/cli/node_modules/@llmtrim/linux-x64/bin/llmtrim' window-sub slash *)"
     ],
     "defaultMode": "bypassPermissions"
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/home/tim/.local/share/fnm/node-versions/v20.18.1/installation/lib/node_modules/@llmtrim/cli/node_modules/@llmtrim/linux-x64/bin/llmtrim' window-sub hook-start # llmtrim-owned-window-sub-hook",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/home/tim/.local/share/fnm/node-versions/v20.18.1/installation/lib/node_modules/@llmtrim/cli/node_modules/@llmtrim/linux-x64/bin/llmtrim' window-sub hook-end # llmtrim-owned-window-sub-hook",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
   },
   "statusLine": {
     "type": "command",
